@@ -18,9 +18,8 @@ public class TelaInicial {
         janela.setVisible(true);
     }
 
-    // 🟩 Função que cria e mostra a tela inicial
+    // ------------------------- Tela Inicial -------------------------
     public static void criarTelaInicial(JFrame janela) {
-        // Limpa o que tinha antes
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
@@ -52,34 +51,58 @@ public class TelaInicial {
         botaoLogin.setFocusPainted(false);
         janela.add(botaoLogin);
 
-        // Ação do botão Login → vai pra tela de login
-        botaoLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mostrarTelaLogin(janela);
-            }
-        });
+        // Quando clicar em "Login"
+        botaoLogin.addActionListener(e -> mostrarTelaLogin(janela));
+
+        // Quando clicar em "Entrar"
+        botaoEntrar.addActionListener(e -> mostrarTelaEntrar(janela));
 
         janela.revalidate();
         janela.repaint();
     }
 
-             //---------------------------Tela de login --------------------------- //
+    // ------------------------- Tela Entrar -------------------------
+    public static void mostrarTelaEntrar(JFrame janela) {
+        janela.getContentPane().removeAll();
+        janela.repaint();
+        janela.getContentPane().setBackground(Color.WHITE);
+
+        JLabel texto = new JLabel("Bem-vindo ao modo livre de estudo!", SwingConstants.CENTER);
+        texto.setBounds(100, 150, 300, 30);
+        janela.add(texto);
+
+        JButton botaoVoltar = new JButton("Voltar");
+        botaoVoltar.setBounds(200, 220, 100, 30);
+        botaoVoltar.setBackground(new Color(60, 179, 113));
+        botaoVoltar.setForeground(Color.WHITE);
+        botaoVoltar.setFocusPainted(false);
+
+        // Voltar pra tela inicial
+        botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
+
+        janela.add(botaoVoltar);
+
+        janela.revalidate();
+        janela.repaint();
+    }
+
+    // ------------------------- Tela Login -------------------------
     public static void mostrarTelaLogin(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
-        JLabel labelUsuario = new JLabel("Usuário:");// JLabel -> só exibe o texto
+        JLabel labelUsuario = new JLabel("Usuário:");
         labelUsuario.setBounds(100, 100, 80, 25);
-        JTextField campoUsuario = new JTextField(); // JTextField -> permite que seja editado algo
+        JTextField campoUsuario = new JTextField();
         campoUsuario.setBounds(180, 100, 200, 25);
 
         JLabel labelSenha = new JLabel("Senha:");
         labelSenha.setBounds(100, 140, 80, 25);
-        JPasswordField campoSenha = new JPasswordField(); // JPasswordField -> não deixa a senha a mostra - fica aquelas bolinhas no lugar
+        JPasswordField campoSenha = new JPasswordField();
         campoSenha.setBounds(180, 140, 200, 25);
 
-        JButton botaoConfirmar = new JButton("Confirmar"); // -> responsável por fazer o botão aparecer
+        JButton botaoConfirmar = new JButton("Confirmar");
         botaoConfirmar.setBounds(150, 190, 100, 30);
         botaoConfirmar.setBackground(new Color(60, 179, 113));
         botaoConfirmar.setForeground(Color.WHITE);
@@ -92,25 +115,19 @@ public class TelaInicial {
         botaoVoltar.setFocusPainted(false);
 
         // Ação do botão Confirmar
-        botaoConfirmar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String usuario = campoUsuario.getText();
-                String senha = new String(campoSenha.getPassword());
+        botaoConfirmar.addActionListener(e -> {
+            String usuario = campoUsuario.getText();
+            String senha = new String(campoSenha.getPassword());
 
-                if (usuario.equals("nome q vai ser passado de outra classe") && senha.equals("msm coisa q o nome")) {
-                    JOptionPane.showMessageDialog(janela, "Login realizado com sucesso!"); // mensagem que vai  aparecer na tela
-                } else {
-                    JOptionPane.showMessageDialog(janela, "Usuário ou senha incorretos.");
-                }
+            if (usuario.equals("admin") && senha.equals("123")) {
+                JOptionPane.showMessageDialog(janela, "Login realizado com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(janela, "Usuário ou senha incorretos.");
             }
         });
 
-        // o botão volta vai novamente para a tela de inicio 
-        botaoVoltar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                criarTelaInicial(janela); //volta pra tela inicial
-            }
-        });
+        // Botão Voltar
+        botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
 
         // Adiciona os elementos à tela
         janela.add(labelUsuario);
