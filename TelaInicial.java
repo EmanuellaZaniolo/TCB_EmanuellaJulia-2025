@@ -63,23 +63,23 @@ public class TelaInicial {
         janela.repaint();
     }
 
-    // 🟦 Função que mostra a tela de login
+             //---------------------------Tela de login --------------------------- //
     public static void mostrarTelaLogin(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
-        JLabel labelUsuario = new JLabel("Usuário:");
+        JLabel labelUsuario = new JLabel("Usuário:");// JLabel -> só exibe o texto
         labelUsuario.setBounds(100, 100, 80, 25);
-        JTextField campoUsuario = new JTextField();
+        JTextField campoUsuario = new JTextField(); // JTextField -> permite que seja editado algo
         campoUsuario.setBounds(180, 100, 200, 25);
 
         JLabel labelSenha = new JLabel("Senha:");
         labelSenha.setBounds(100, 140, 80, 25);
-        JPasswordField campoSenha = new JPasswordField();
+        JPasswordField campoSenha = new JPasswordField(); // JPasswordField -> não deixa a senha a mostra - fica aquelas bolinhas no lugar
         campoSenha.setBounds(180, 140, 200, 25);
 
-        JButton botaoConfirmar = new JButton("Confirmar");
+        JButton botaoConfirmar = new JButton("Confirmar"); // -> responsável por fazer o botão aparecer
         botaoConfirmar.setBounds(150, 190, 100, 30);
         botaoConfirmar.setBackground(new Color(60, 179, 113));
         botaoConfirmar.setForeground(Color.WHITE);
@@ -97,18 +97,18 @@ public class TelaInicial {
                 String usuario = campoUsuario.getText();
                 String senha = new String(campoSenha.getPassword());
 
-                if (usuario.equals("admin") && senha.equals("123")) {
-                    JOptionPane.showMessageDialog(janela, "Login realizado com sucesso!");
+                if (usuario.equals("nome q vai ser passado de outra classe") && senha.equals("msm coisa q o nome")) {
+                    JOptionPane.showMessageDialog(janela, "Login realizado com sucesso!"); // mensagem que vai  aparecer na tela
                 } else {
                     JOptionPane.showMessageDialog(janela, "Usuário ou senha incorretos.");
                 }
             }
         });
 
-        // Ação do botão Voltar → volta pra tela inicial
+        // o botão volta vai novamente para a tela de inicio 
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                criarTelaInicial(janela); // ✅ volta pra tela inicial
+                criarTelaInicial(janela); //volta pra tela inicial
             }
         });
 
