@@ -1,3 +1,5 @@
+package br.edu.ifpr.tcb_bio.modelo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

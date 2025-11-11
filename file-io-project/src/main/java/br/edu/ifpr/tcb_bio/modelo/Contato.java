@@ -5,15 +5,10 @@ public class Contato {
     private String nome;
     private String celular;
     private String email;
-    private Endereco endereco;
+     private Cadatro cadastro;
+   
     public Contato(){
 
-    }
-    public Endereco getEndereco() {
-        return endereco;
-    }
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
     }
     public int getId() {
         return id;
@@ -38,6 +33,12 @@ public class Contato {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Cadatro getCadastro() {
+        return cadastro;
+    }
+    public void setCadastro(Cadatro cadastro) {
+        this.cadastro = cadastro;
     }
     
 }

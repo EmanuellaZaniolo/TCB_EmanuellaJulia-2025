@@ -1,15 +1,17 @@
+package br.edu.ifpr.tcb_bio.modelo;
+
 import java.util.ArrayList;
 public class Ranking {
-    private ArrayList<Cadastro> usuarios = new ArrayList<>();
+    private ArrayList<Cadatro> usuarios = new ArrayList<>();
     private ArrayList<Integer> pontuacao =  new ArrayList<>();
 
     public Ranking() {
     }
 
-    public ArrayList<Cadastro> getUsuarios() {
+    public ArrayList<Cadatro> getUsuarios() {
         return usuarios;
     }
-    public void setUsuarios(ArrayList<Cadastro> usuarios) {
+    public void setUsuarios(ArrayList<Cadatro> usuarios) {
         this.usuarios = usuarios;
     }
     public ArrayList<Integer> getPontuacao() {
