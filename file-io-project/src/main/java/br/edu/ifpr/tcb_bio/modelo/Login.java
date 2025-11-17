@@ -3,6 +3,9 @@ package br.edu.ifpr.tcb_bio.modelo;
 public class Login {
     private String senha;
     private String nomeUsuario;
+    private int idLogin;
+    private Cadastro cadastro;// para verificar e a senha donlogin e do cadastroi são iguais para asssim logar
+
 
     public Login(){
 

@@ -1,15 +1,15 @@
 package br.edu.ifpr.tcb_bio.modelo;
 
-public class Cadatro {
+public class Cadastro {
     private String nomePessoa;
     private String senha;
     private String email;
     private String nomeUsuario;
     private String idCadastro;
     
-    public Cadatro(){
+    public Cadastro(){
         
-    }
+    } 
     public String getIdCadastro() {
         return idCadastro;
     }

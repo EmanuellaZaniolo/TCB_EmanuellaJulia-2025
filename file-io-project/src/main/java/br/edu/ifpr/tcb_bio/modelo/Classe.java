@@ -1,5 +1,5 @@
 package br.edu.ifpr.tcb_bio.modelo;
 
-public class ReinoPrptista {
+public class Classe {
     
 }

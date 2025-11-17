@@ -5,7 +5,7 @@ public class Contato {
     private String nome;
     private String celular;
     private String email;
-     private Cadatro cadastro;
+     private Cadastro cadastro;
    
     public Contato(){
 
@@ -34,10 +34,10 @@ public class Contato {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Cadatro getCadastro() {
+    public Cadastro getCadastro() {
         return cadastro;
     }
-    public void setCadastro(Cadatro cadastro) {
+    public void setCadastro(Cadastro cadastro) {
         this.cadastro = cadastro;
     }
     
