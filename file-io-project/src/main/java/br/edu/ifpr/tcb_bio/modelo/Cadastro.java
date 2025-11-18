@@ -6,6 +6,15 @@ public class Cadastro {
     private String nomeUsuario;    
     private String email;
     private String senha;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Cadastro() {
 
