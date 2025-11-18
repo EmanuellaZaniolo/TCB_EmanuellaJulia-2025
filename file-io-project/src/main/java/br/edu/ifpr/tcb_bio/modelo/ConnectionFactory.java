@@ -1,4 +1,4 @@
-package br.edu.ifpr.tcb_bio.modelo.dao;
+package br.edu.ifpr.tcb_bio.modelo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

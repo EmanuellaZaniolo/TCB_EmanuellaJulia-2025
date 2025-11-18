@@ -4,6 +4,24 @@ public class Classe {
 
     private String nomeClasse;
     private String descricao;
+    private Filo filo;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Filo getFilo() {
+        return filo;
+    }
+
+    public void setFilo(Filo filo) {
+        this.filo = filo;
+    }
 
     public Classe() {
 

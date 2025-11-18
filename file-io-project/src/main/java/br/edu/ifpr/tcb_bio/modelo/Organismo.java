@@ -7,6 +7,15 @@ public class Organismo {
     private Classe classe;
     private Filo filo;
     private Reino reino;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private int id;
 
     public Organismo() {
 
