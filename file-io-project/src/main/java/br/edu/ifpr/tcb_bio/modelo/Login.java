@@ -1,14 +1,25 @@
 package br.edu.ifpr.tcb_bio.modelo;
 
 public class Login {
-    private String senha;
+
     private String nomeUsuario;
-    private int idLogin;
-    private Cadastro cadastro;// para verificar e a senha donlogin e do cadastroi são iguais para asssim logar
+    private String senha;
 
+    public Login() {
 
-    public Login(){
+    }
 
+    public Login(String nomeUsuario, String senha) {
+        this.nomeUsuario = nomeUsuario;
+        this.senha = senha;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
     }
 
     public String getSenha() {
@@ -19,11 +30,12 @@ public class Login {
         this.senha = senha;
     }
 
-    public String getNomeUsuario() {
-        return nomeUsuario;
-    }
-
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+   
+    public boolean validar(Cadastro cadastro) {
+        if (cadastro == null) {
+            return false;
+        }
+        return cadastro.getNomeUsuario().equals(this.nomeUsuario)
+               && cadastro.getSenha().equals(this.senha);
     }
 }
