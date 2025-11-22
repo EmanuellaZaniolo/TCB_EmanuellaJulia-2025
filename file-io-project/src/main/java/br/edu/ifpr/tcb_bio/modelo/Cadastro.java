@@ -2,11 +2,14 @@ package br.edu.ifpr.tcb_bio.modelo;
 
 public class Cadastro {
 
-    private String nomePessoa;    
-    private String nomeUsuario;    
+    private String nomePessoa;
+    private String nomeUsuario;
     private String email;
     private String senha;
+    private String tipoUsuario; // ADMIN ou ALUNO
     private int id;
+
+    public Cadastro() {}
 
     public int getId() {
         return id;
@@ -14,10 +17,6 @@ public class Cadastro {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Cadastro() {
-
     }
 
     public String getNomePessoa() {
@@ -52,5 +51,11 @@ public class Cadastro {
         this.senha = senha;
     }
 
-  
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
 }

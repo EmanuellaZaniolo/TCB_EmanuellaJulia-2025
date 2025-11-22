@@ -16,6 +16,10 @@ public class CadastroController {
                 return "Preencha todos os campos!";
             }
 
+            if (c.getTipoUsuario() == null || c.getTipoUsuario().isEmpty()) {
+                return "Selecione o tipo do usuário!";
+            }
+
             Cadastro existente = cadastroDAO.buscarPorUsuario(c.getNomeUsuario());
             if (existente != null) {
                 return "Usuário já existe!";
