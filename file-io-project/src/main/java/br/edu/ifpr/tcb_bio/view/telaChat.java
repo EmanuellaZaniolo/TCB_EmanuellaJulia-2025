@@ -1,9 +1,10 @@
-package br.edu.ifpr.tcb_bio.modelo;
+package br.edu.ifpr.tcb_bio.view;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+import br.edu.ifpr.tcb_bio.modelo.*;
 public class telaChat {
 
     private static App app = new App();
@@ -22,29 +23,43 @@ public class telaChat {
     }
 
     // ------------------------- Tela Inicial -------------------------
-    public static void criarTelaInicial(JFrame janela) {
-        janela.getContentPane().removeAll();
-        janela.repaint();
-        janela.getContentPane().setBackground(Color.WHITE);
+   public static void criarTelaInicial(JFrame janela) {
+    janela.getContentPane().removeAll();
+    janela.repaint();
+    janela.setLayout(null);
 
-        JLabel titulo = new JLabel("Bem-vindo ao Byolia", SwingConstants.CENTER);
-        titulo.setBounds(100, 100, 300, 30);
-        janela.add(titulo);
+    int largura = 500;
+    int altura = 400;
 
-        JButton botaoLogin = new JButton("Login");
-        botaoLogin.setBounds(150, 200, 90, 30);
-        janela.add(botaoLogin);
+    // ---------- IMAGEM DE FUNDO GRANDE ----------
+    ImageIcon icon = new ImageIcon(telaChat.class.getResource("/imagem.png"));
+    Image img = icon.getImage().getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
+    JLabel fundo = new JLabel(new ImageIcon(img));
+    fundo.setBounds(0, 0, largura, altura);
 
-        JButton botaoCadastro = new JButton("Cadastrar");
-        botaoCadastro.setBounds(260, 200, 90, 30);
-        janela.add(botaoCadastro);
+    // ---------- BOTÕES ----------
+    JButton botaoLogin = new JButton("Login");
+    botaoLogin.setBounds(150, 280, 90, 30);
 
-        botaoLogin.addActionListener(e -> mostrarTelaLogin(janela));
-        botaoCadastro.addActionListener(e -> mostrarTelaCadastro(janela));
+    JButton botaoCadastro = new JButton("Cadastrar");
+    botaoCadastro.setBounds(260, 280, 100, 30);
 
-        janela.revalidate();
-        janela.repaint();
-    }
+    botaoLogin.addActionListener(e -> mostrarTelaLogin(janela));
+    botaoCadastro.addActionListener(e -> mostrarTelaCadastro(janela));
+
+    // ---------- ADICIONAR COMPONENTES ----------
+  
+    janela.add(botaoLogin);
+    janela.add(botaoCadastro);
+
+    // Fundo SEMPRE por último (fica atrás de tudo)
+    janela.add(fundo);
+
+    janela.revalidate();
+    janela.repaint();
+}
+
+
 
     // ------------------------- Tela Cadastro -------------------------
     public static void mostrarTelaCadastro(JFrame janela) {
