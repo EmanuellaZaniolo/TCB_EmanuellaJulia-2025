@@ -12,13 +12,14 @@ public class telaChat {
     private static Perfil usuarioLogado;
 
     public static void main(String[] args) {
-        JFrame janela = new JFrame("Byolia - Estudo dirigido de biologia");
-        janela.setSize(500, 400);
+        JFrame janela = new JFrame("Byolia - Seja bem-vindo(a)! ");
+        janela.setSize(1000, 850);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setLayout(null);
 
         criarTelaInicial(janela);
 
+        janela.setLocationRelativeTo(null);
         janela.setVisible(true);
     }
 
@@ -28,31 +29,27 @@ public class telaChat {
     janela.repaint();
     janela.setLayout(null);
 
-    int largura = 500;
-    int altura = 400;
+    int largura = 1000;
+    int altura = 840;
 
-    // ---------- IMAGEM DE FUNDO GRANDE ----------
+    //imagem
     ImageIcon icon = new ImageIcon(telaChat.class.getResource("/imagem.png"));
     Image img = icon.getImage().getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
     JLabel fundo = new JLabel(new ImageIcon(img));
     fundo.setBounds(0, 0, largura, altura);
 
-    // ---------- BOTÕES ----------
+    //botões
     JButton botaoLogin = new JButton("Login");
-    botaoLogin.setBounds(150, 280, 90, 30);
+    botaoLogin.setBounds(270, 600, 200, 50);
 
     JButton botaoCadastro = new JButton("Cadastrar");
-    botaoCadastro.setBounds(260, 280, 100, 30);
+    botaoCadastro.setBounds(545, 600, 200, 50);
 
     botaoLogin.addActionListener(e -> mostrarTelaLogin(janela));
     botaoCadastro.addActionListener(e -> mostrarTelaCadastro(janela));
-
-    // ---------- ADICIONAR COMPONENTES ----------
   
     janela.add(botaoLogin);
     janela.add(botaoCadastro);
-
-    // Fundo SEMPRE por último (fica atrás de tudo)
     janela.add(fundo);
 
     janela.revalidate();
@@ -61,14 +58,14 @@ public class telaChat {
 
 
 
-    // ------------------------- Tela Cadastro -------------------------
+    // ------------------------- Tela Cadatro -------------------------
     public static void mostrarTelaCadastro(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
         JLabel labelNome = new JLabel("Nome:");
-        labelNome.setBounds(100, 50, 80, 25);
+        labelNome.setBounds(500, 100, 80, 25);
         JTextField campoNome = new JTextField();
         campoNome.setBounds(180, 50, 200, 25);
 
@@ -83,9 +80,9 @@ public class telaChat {
         campoSenha.setBounds(180, 130, 200, 25);
 
         JButton botaoConfirmar = new JButton("Cadastrar");
-        botaoConfirmar.setBounds(150, 180, 100, 30);
+        botaoConfirmar.setBounds(270, 550, 200, 50);
         JButton botaoVoltar = new JButton("Voltar");
-        botaoVoltar.setBounds(260, 180, 100, 30);
+        botaoVoltar.setBounds(270, 600, 200, 50);
 
         botaoConfirmar.addActionListener(e -> {
             String nome = campoNome.getText();
@@ -126,7 +123,7 @@ public class telaChat {
         janela.repaint();
     }
 
-    // ------------------------- Tela Login -------------------------
+    // ------------------------- Login -------------------------
     public static void mostrarTelaLogin(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
