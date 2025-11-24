@@ -1,45 +1,38 @@
 package br.edu.ifpr.tcb_bio.modelo;
 
-import java.util.ArrayList;
+import br.edu.ifpr.tcb_bio.modelo.dao.CadastroDAO;
 
 public class App {
 
-    private ArrayList<Cadastro> cadastros;
+    private CadastroDAO cadastroDAO = new CadastroDAO();
 
-    public App() {
-        cadastros = new ArrayList<>();
+    public void cadastrarUsuario(Cadastro c) {
+        try {
+            cadastroDAO.inserir(c); // salva no banco
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // Cadastrar novo usuário
-    public void cadastrarUsuario(Cadastro cadastro) {
-        cadastros.add(cadastro);
-    }
-
-    // Buscar um usuário pelo nome de usuário
-    public Cadastro buscarUsuario(String nomeUsuario) {
-
-        for (Cadastro cadastro : cadastros) {
-            if (cadastro.getNomeUsuario().equals(nomeUsuario)) {
-                return cadastro;
-            }
+    public Cadastro buscarUsuario(String usuario) {
+        try {
+            return cadastroDAO.buscarPorUsuario(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    // Fazer login (compara usuário e senha)
-    public boolean fazerLogin(String nomeUsuario, String senha) {
+    public boolean fazerLogin(String usuario, String senha) {
+        try {
+            Cadastro c = cadastroDAO.buscarPorUsuario(usuario);
 
-        for (Cadastro cadastro : cadastros) {
-            if (cadastro.getNomeUsuario().equals(nomeUsuario) &&
-                cadastro.getSenha().equals(senha)) {
+            if (c != null && c.getSenha().equals(senha)) {
                 return true;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
-    }
-
-    // Retorna a lista completa de usuários (para Ranking)
-    public ArrayList<Cadastro> getCadastros() {
-        return cadastros;
     }
 }

@@ -1,13 +1,14 @@
 package br.edu.ifpr.tcb_bio.view;
 
+import br.edu.ifpr.tcb_bio.modelo.dao.CadastroDAO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-
 import br.edu.ifpr.tcb_bio.modelo.*;
+
 public class telaChat {
 
-    private static App app = new App();
+    private static App app = new App();   // AGORA O APP USA O DAO
     private static Ranking ranking = new Ranking();
     private static Perfil usuarioLogado;
 
@@ -24,48 +25,44 @@ public class telaChat {
     }
 
     // ------------------------- Tela Inicial -------------------------
-   public static void criarTelaInicial(JFrame janela) {
-    janela.getContentPane().removeAll();
-    janela.repaint();
-    janela.setLayout(null);
+    public static void criarTelaInicial(JFrame janela) {
+        janela.getContentPane().removeAll();
+        janela.repaint();
+        janela.setLayout(null);
 
-    int largura = 1000;
-    int altura = 840;
+        int largura = 1000;
+        int altura = 840;
 
-    //imagem
-    ImageIcon icon = new ImageIcon(telaChat.class.getResource("/imagem.png"));
-    Image img = icon.getImage().getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
-    JLabel fundo = new JLabel(new ImageIcon(img));
-    fundo.setBounds(0, 0, largura, altura);
+        ImageIcon icon = new ImageIcon(telaChat.class.getResource("/imagem.png"));
+        Image img = icon.getImage().getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
+        JLabel fundo = new JLabel(new ImageIcon(img));
+        fundo.setBounds(0, 0, largura, altura);
 
-    //botões
-    JButton botaoLogin = new JButton("Login");
-    botaoLogin.setBounds(270, 600, 200, 50);
+        JButton botaoLogin = new JButton("Login");
+        botaoLogin.setBounds(270, 600, 200, 50);
 
-    JButton botaoCadastro = new JButton("Cadastrar");
-    botaoCadastro.setBounds(545, 600, 200, 50);
+        JButton botaoCadastro = new JButton("Cadastrar");
+        botaoCadastro.setBounds(545, 600, 200, 50);
 
-    botaoLogin.addActionListener(e -> mostrarTelaLogin(janela));
-    botaoCadastro.addActionListener(e -> mostrarTelaCadastro(janela));
-  
-    janela.add(botaoLogin);
-    janela.add(botaoCadastro);
-    janela.add(fundo);
+        botaoLogin.addActionListener(e -> mostrarTelaLogin(janela));
+        botaoCadastro.addActionListener(e -> mostrarTelaCadastro(janela));
 
-    janela.revalidate();
-    janela.repaint();
-}
+        janela.add(botaoLogin);
+        janela.add(botaoCadastro);
+        janela.add(fundo);
 
+        janela.revalidate();
+        janela.repaint();
+    }
 
-
-    // ------------------------- Tela Cadatro -------------------------
+    // ------------------------- Tela Cadastro -------------------------
     public static void mostrarTelaCadastro(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
         JLabel labelNome = new JLabel("Nome:");
-        labelNome.setBounds(500, 100, 80, 25);
+        labelNome.setBounds(100, 50, 80, 25);
         JTextField campoNome = new JTextField();
         campoNome.setBounds(180, 50, 200, 25);
 
@@ -81,9 +78,11 @@ public class telaChat {
 
         JButton botaoConfirmar = new JButton("Cadastrar");
         botaoConfirmar.setBounds(270, 550, 200, 50);
+
         JButton botaoVoltar = new JButton("Voltar");
         botaoVoltar.setBounds(270, 600, 200, 50);
 
+        // ------- TRECHO CORRIGIDO (CADASTRO AGORA VAI PARA O BANCO) -------
         botaoConfirmar.addActionListener(e -> {
             String nome = campoNome.getText();
             String usuario = campoUsuario.getText();
@@ -98,15 +97,16 @@ public class telaChat {
             cadastro.setNomePessoa(nome);
             cadastro.setNomeUsuario(usuario);
             cadastro.setSenha(senha);
+            cadastro.setEmail("sem-email");     // temporário
+            cadastro.setTipoUsuario("ALUNO");   // padrão
 
+            // SALVA NO BANCO
             app.cadastrarUsuario(cadastro);
-
-            Perfil perfil = new Perfil(cadastro);
-            ranking.adicionarPerfil(perfil);
 
             JOptionPane.showMessageDialog(janela, "Cadastro realizado com sucesso!");
             criarTelaInicial(janela);
         });
+        // -----------------------------------------------------------------
 
         botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
 
@@ -141,20 +141,27 @@ public class telaChat {
 
         JButton botaoConfirmar = new JButton("Login");
         botaoConfirmar.setBounds(150, 140, 100, 30);
+
         JButton botaoVoltar = new JButton("Voltar");
         botaoVoltar.setBounds(260, 140, 100, 30);
 
+        // ------- TRECHO CORRIGIDO (LOGIN COM BANCO) -------
         botaoConfirmar.addActionListener(e -> {
             String usuario = campoUsuario.getText();
             String senha = new String(campoSenha.getPassword());
 
             if (app.fazerLogin(usuario, senha)) {
-                usuarioLogado = ranking.getPerfis().get(app.getCadastros().indexOf(app.buscarUsuario(usuario)));
+
+                Cadastro c = app.buscarUsuario(usuario);
+                usuarioLogado = new Perfil(c); // Agora cria perfil com dados do banco
+
                 mostrarTelaReinos(janela);
+
             } else {
                 JOptionPane.showMessageDialog(janela, "Usuário ou senha incorretos!");
             }
         });
+        // -----------------------------------------------------
 
         botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
 
@@ -179,7 +186,7 @@ public class telaChat {
         titulo.setBounds(100, 50, 300, 30);
         janela.add(titulo);
 
-        ArrayList<Reino> reinos = criarReinosExemplo(); // exemplo de reinos
+        ArrayList<Reino> reinos = criarReinosExemplo();
 
         int y = 100;
         for (Reino reino : reinos) {
@@ -205,7 +212,6 @@ public class telaChat {
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
-        // Criar questão de exemplo
         Questao q = new Questao();
         q.setEnunciado("Qual característica do reino " + reino.getNomeReino() + "?");
         q.setReino(reino);
@@ -228,7 +234,7 @@ public class telaChat {
                 } else {
                     JOptionPane.showMessageDialog(janela, "Errado!");
                 }
-                mostrarTelaReinos(janela); // volta para reinos
+                mostrarTelaReinos(janela);
             });
             janela.add(botaoAlt);
             y += 40;
@@ -269,6 +275,7 @@ public class telaChat {
     // ------------------------- Criar reinos de exemplo -------------------------
     private static ArrayList<Reino> criarReinosExemplo() {
         ArrayList<Reino> reinos = new ArrayList<>();
+
         Reino animalia = new Reino();
         animalia.setNomeReino("Animalia");
         animalia.setDescricao("Reino Animal");
