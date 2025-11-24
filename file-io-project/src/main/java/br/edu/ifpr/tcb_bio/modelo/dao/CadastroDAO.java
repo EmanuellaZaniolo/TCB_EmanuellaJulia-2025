@@ -3,11 +3,14 @@ package br.edu.ifpr.tcb_bio.modelo.dao;
 import br.edu.ifpr.tcb_bio.modelo.Cadastro;
 import br.edu.ifpr.tcb_bio.modelo.ConnectionFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CadastroDAO {
 
-    public void inserir(Cadastro c) throws Exception {
+    public void inserir(Cadastro c) throws SQLException {
         String sql = "INSERT INTO cadastro (nomePessoa, nomeUsuario, email, senha, tipoUsuario) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = ConnectionFactory.getConnection();
@@ -23,7 +26,7 @@ public class CadastroDAO {
         }
     }
 
-    public Cadastro buscarPorUsuario(String nomeUsuario) throws Exception {
+    public Cadastro buscarPorUsuario(String nomeUsuario) throws SQLException {
         String sql = "SELECT * FROM cadastro WHERE nomeUsuario = ?";
 
         try (Connection con = ConnectionFactory.getConnection();

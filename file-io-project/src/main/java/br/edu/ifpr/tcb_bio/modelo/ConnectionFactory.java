@@ -5,21 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-private static Connection conexao;
-private ConnectionFactory() {
 
-}
-public static Connection getConnection(){
-    try{
-    if(conexao == null) {
+    public static Connection getConnection() throws SQLException {
+
         String url = "jdbc:mysql://localhost:3306/tcb_bio";
-        String user="aluno";
-        String password="aluno";
-        conexao = DriverManager.getConnection(url, user, password);
+        String user = "aluno";
+        String password = "aluno";
+
+        return DriverManager.getConnection(url, user, password);
     }
-} catch(SQLException e) {
-    e.printStackTrace();
-}
-    return conexao;
-}
 }

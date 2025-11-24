@@ -5,19 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.edu.ifpr</groupId>
-    <artifactId>file-io-project</artifactId>
+    <artifactId>agenda</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>

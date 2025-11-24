@@ -1,19 +1,21 @@
 package br.edu.ifpr.tcb_bio.view;
 
-import br.edu.ifpr.tcb_bio.modelo.dao.CadastroDAO;
+import br.edu.ifpr.tcb_bio.controller.CadastroController;
+import br.edu.ifpr.tcb_bio.modelo.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import br.edu.ifpr.tcb_bio.modelo.*;
 
 public class telaChat {
 
-    private static App app = new App();   // AGORA O APP USA O DAO
-    private static Ranking ranking = new Ranking();
+    // ----------------- CONTROLLERS -----------------
+    private static CadastroController cadastroController = new CadastroController();
+    // Se quiser futuramente, adicione QuestaoController, PerfilController etc.
+
     private static Perfil usuarioLogado;
 
     public static void main(String[] args) {
-        JFrame janela = new JFrame("Byolia - Seja bem-vindo(a)! ");
+        JFrame janela = new JFrame("Byolia - Seja bem-vindo(a)!");
         janela.setSize(1000, 850);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setLayout(null);
@@ -82,16 +84,10 @@ public class telaChat {
         JButton botaoVoltar = new JButton("Voltar");
         botaoVoltar.setBounds(270, 600, 200, 50);
 
-        // ------- TRECHO CORRIGIDO (CADASTRO AGORA VAI PARA O BANCO) -------
         botaoConfirmar.addActionListener(e -> {
             String nome = campoNome.getText();
             String usuario = campoUsuario.getText();
             String senha = new String(campoSenha.getPassword());
-
-            if (nome.isEmpty() || usuario.isEmpty() || senha.isEmpty()) {
-                JOptionPane.showMessageDialog(janela, "Preencha todos os campos!");
-                return;
-            }
 
             Cadastro cadastro = new Cadastro();
             cadastro.setNomePessoa(nome);
@@ -100,13 +96,13 @@ public class telaChat {
             cadastro.setEmail("sem-email");     // temporário
             cadastro.setTipoUsuario("ALUNO");   // padrão
 
-            // SALVA NO BANCO
-            app.cadastrarUsuario(cadastro);
+            String resultado = cadastroController.cadastrar(cadastro);
+            JOptionPane.showMessageDialog(janela, resultado);
 
-            JOptionPane.showMessageDialog(janela, "Cadastro realizado com sucesso!");
-            criarTelaInicial(janela);
+            if (resultado.equals("Cadastro realizado com sucesso!")) {
+                criarTelaInicial(janela);
+            }
         });
-        // -----------------------------------------------------------------
 
         botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
 
@@ -123,7 +119,7 @@ public class telaChat {
         janela.repaint();
     }
 
-    // ------------------------- Login -------------------------
+    // ------------------------- Tela Login -------------------------
     public static void mostrarTelaLogin(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
@@ -145,23 +141,19 @@ public class telaChat {
         JButton botaoVoltar = new JButton("Voltar");
         botaoVoltar.setBounds(260, 140, 100, 30);
 
-        // ------- TRECHO CORRIGIDO (LOGIN COM BANCO) -------
         botaoConfirmar.addActionListener(e -> {
             String usuario = campoUsuario.getText();
             String senha = new String(campoSenha.getPassword());
 
-            if (app.fazerLogin(usuario, senha)) {
+            Cadastro c = cadastroController.login(usuario, senha);
 
-                Cadastro c = app.buscarUsuario(usuario);
-                usuarioLogado = new Perfil(c); // Agora cria perfil com dados do banco
-
+            if (c != null) {
+                usuarioLogado = new Perfil(c);
                 mostrarTelaReinos(janela);
-
             } else {
                 JOptionPane.showMessageDialog(janela, "Usuário ou senha incorretos!");
             }
         });
-        // -----------------------------------------------------
 
         botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
 
