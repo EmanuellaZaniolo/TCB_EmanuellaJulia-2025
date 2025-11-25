@@ -63,29 +63,38 @@ public class telaChat {
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
+        JLabel labeOrdem = new JLabel("Preencha os espaços abaixo para fazer o seu cadastro no Byolia");
+        labeOrdem.setBounds(320, 90, 1000000, 50);
+
         JLabel labelNome = new JLabel("Nome:");
-        labelNome.setBounds(100, 50, 80, 25);
+        labelNome.setBounds(200, 200, 80, 50);
         JTextField campoNome = new JTextField();
-        campoNome.setBounds(180, 50, 200, 25);
+        campoNome.setBounds(280, 200, 480, 50);
+
+         JLabel labelEmail = new JLabel("Email:");
+        labelEmail.setBounds(200, 280, 80, 50);
+        JTextField campoEmail = new JTextField();
+        campoEmail.setBounds(280, 280,480, 50);
 
         JLabel labelUsuario = new JLabel("Usuário:");
-        labelUsuario.setBounds(100, 90, 80, 25);
+        labelUsuario.setBounds(200, 360, 80, 50);
         JTextField campoUsuario = new JTextField();
-        campoUsuario.setBounds(180, 90, 200, 25);
+        campoUsuario.setBounds(280, 360, 480, 50);
 
         JLabel labelSenha = new JLabel("Senha:");
-        labelSenha.setBounds(100, 130, 80, 25);
+        labelSenha.setBounds(200, 440, 80, 50);
         JPasswordField campoSenha = new JPasswordField();
-        campoSenha.setBounds(180, 130, 200, 25);
+        campoSenha.setBounds(280, 440, 480, 50);
 
         JButton botaoConfirmar = new JButton("Cadastrar");
-        botaoConfirmar.setBounds(270, 550, 200, 50);
+        botaoConfirmar.setBounds(550, 600, 200, 40);
 
         JButton botaoVoltar = new JButton("Voltar");
-        botaoVoltar.setBounds(270, 600, 200, 50);
+        botaoVoltar.setBounds(270, 600, 200, 40);
 
         botaoConfirmar.addActionListener(e -> {
             String nome = campoNome.getText();
+            String email = campoEmail.getText();
             String usuario = campoUsuario.getText();
             String senha = new String(campoSenha.getPassword());
 
@@ -93,7 +102,7 @@ public class telaChat {
             cadastro.setNomePessoa(nome);
             cadastro.setNomeUsuario(usuario);
             cadastro.setSenha(senha);
-            cadastro.setEmail("sem-email");     // temporário
+            cadastro.setEmail(email);     // temporário
             cadastro.setTipoUsuario("ALUNO");   // padrão
 
             String resultado = cadastroController.cadastrar(cadastro);
@@ -106,8 +115,11 @@ public class telaChat {
 
         botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
 
+        janela.add(labeOrdem);
         janela.add(labelNome);
         janela.add(campoNome);
+        janela.add(labelEmail);
+        janela.add(campoEmail);
         janela.add(labelUsuario);
         janela.add(campoUsuario);
         janela.add(labelSenha);
@@ -125,30 +137,38 @@ public class telaChat {
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
-        JLabel labelUsuario = new JLabel("Usuário:");
-        labelUsuario.setBounds(100, 50, 80, 25);
+        JLabel labelOrdem = new JLabel("Preencha os espaços abaixo para fazer o seu login no Byolia");
+        labelOrdem.setBounds(335, 90, 1000000, 50);
+
+         JLabel labelUsuario = new JLabel("Usuário:");
+        labelUsuario.setBounds(200, 200, 80, 50);
         JTextField campoUsuario = new JTextField();
-        campoUsuario.setBounds(180, 50, 200, 25);
+        campoUsuario.setBounds(280, 200, 480, 50);
 
         JLabel labelSenha = new JLabel("Senha:");
-        labelSenha.setBounds(100, 90, 80, 25);
+        labelSenha.setBounds(200, 280, 80, 50);
         JPasswordField campoSenha = new JPasswordField();
-        campoSenha.setBounds(180, 90, 200, 25);
+        campoSenha.setBounds(280, 280,480, 50);
 
         JButton botaoConfirmar = new JButton("Login");
-        botaoConfirmar.setBounds(150, 140, 100, 30);
+        botaoConfirmar.setBounds(310, 360, 200, 40);
 
         JButton botaoVoltar = new JButton("Voltar");
-        botaoVoltar.setBounds(260, 140, 100, 30);
+        botaoVoltar.setBounds(530, 360, 200, 40);
 
         botaoConfirmar.addActionListener(e -> {
             String usuario = campoUsuario.getText();
             String senha = new String(campoSenha.getPassword());
 
             Cadastro c = cadastroController.login(usuario, senha);
+            Login login =
 
             if (c != null) {
                 usuarioLogado = new Perfil(c);
+                if(login.ehAdmin(c)){ // o usuário só poderá ter acesso a certas funcoes se for ADMIN, o tipo do usuario já é definido no database
+                    mostrarTelaAdmin(janela);
+
+                }
                 mostrarTelaReinos(janela);
             } else {
                 JOptionPane.showMessageDialog(janela, "Usuário ou senha incorretos!");
@@ -157,6 +177,7 @@ public class telaChat {
 
         botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
 
+        janela.add(labelOrdem);
         janela.add(labelUsuario);
         janela.add(campoUsuario);
         janela.add(labelSenha);
@@ -166,6 +187,13 @@ public class telaChat {
 
         janela.revalidate();
         janela.repaint();
+    }
+
+    public static void mostrarTelaAdmin(JFrame janela ){
+        janela.getContentPane().removeAll();
+        janela.repaint();
+        janela.getContentPane().setBackground(Color.WHITE);
+
     }
 
     // ------------------------- Tela Reinos -------------------------

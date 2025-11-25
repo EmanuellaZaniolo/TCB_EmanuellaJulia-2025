@@ -6,6 +6,10 @@ public class Login {
     private String senha;
 
 
+    public Login() {
+
+    }
+
     public Login(String nomeUsuario, String senha) {
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
@@ -35,4 +39,15 @@ public class Login {
         return cadastro.getNomeUsuario().equals(this.nomeUsuario)
                && cadastro.getSenha().equals(this.senha);
     }
+
+    // verifica se o usuário é admin ou aluno, essa validação vai ser necessária para deixar possível certas funçoẽs ao usuário
+    public boolean ehAdmin(Cadastro cadastro){
+        if(cadastro.getTipoUsuario() == "ADMIN"){
+            return true;
+
+        }
+        return false;
+    }
+
+
 }
