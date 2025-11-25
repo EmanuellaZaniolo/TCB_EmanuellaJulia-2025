@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class AlternativaDAO {
-
+//insere as alternativas para uma questao, falando se é true ou false para "isCorreta"
     public void inserir(Alternativa a, int idQuestao) throws Exception {
         String sql = "INSERT INTO alternativa(idQuestao, texto, correta) VALUES (?, ?, ?)";
 
@@ -20,7 +20,7 @@ public class AlternativaDAO {
             ps.executeUpdate();
         }
     }
-
+// apenas lsista as alternativas falando se é correta ou não
     public ArrayList<Alternativa> listar() throws Exception {
         ArrayList<Alternativa> lista = new ArrayList<>();
         String sql = "SELECT * FROM alternativa";
@@ -38,7 +38,7 @@ public class AlternativaDAO {
         }
         return lista;
     }
-
+//proucura uma alternativa usando o id atribuido a ela
     public Alternativa buscarPorId(int id) throws Exception {
         String sql = "SELECT * FROM alternativa WHERE id=?";
 
@@ -57,7 +57,7 @@ public class AlternativaDAO {
         }
         return null;
     }
-
+// troca o texto da alternativa usando o id para buscar 
     public void atualizar(int id, Alternativa a) throws Exception {
         String sql = "UPDATE alternativa SET texto=?, correta=? WHERE id=?";
 
@@ -70,7 +70,7 @@ public class AlternativaDAO {
             ps.executeUpdate();
         }
     }
-
+// deleta usando o id pra buscar
     public void deletar(int id) throws Exception {
         String sql = "DELETE FROM alternativa WHERE id=?";
 
@@ -78,6 +78,7 @@ public class AlternativaDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, id);
+            //aqui ele atualiza 
             ps.executeUpdate();
         }
     }

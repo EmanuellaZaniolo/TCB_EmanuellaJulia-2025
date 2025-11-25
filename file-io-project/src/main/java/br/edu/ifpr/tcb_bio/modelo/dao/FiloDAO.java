@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class FiloDAO {
-
+    //insere o nome e descrição de um filo com o id
     public void inserir(Filo f, int idReino) throws Exception {
         String sql = "INSERT INTO filo(idReino, nome, descricao) VALUES (?, ?, ?)";
 
@@ -20,7 +20,7 @@ public class FiloDAO {
             ps.executeUpdate();
         }
     }
-
+//apenas lista os nomes e descrições ja inseridas
     public ArrayList<Filo> listar() throws Exception {
         ArrayList<Filo> lista = new ArrayList<>();
         String sql = "SELECT * FROM filo";
@@ -38,7 +38,7 @@ public class FiloDAO {
         }
         return lista;
     }
-
+//busca usando o id e retorna nome e descrição
     public Filo buscarPorId(int id) throws Exception {
         String sql = "SELECT * FROM filo WHERE id = ?";
 
@@ -57,7 +57,7 @@ public class FiloDAO {
         }
         return null;
     }
-
+//atualiza o nome ou descrição de um filo usando o id pra buscar 
     public void atualizar(int id, Filo f) throws Exception {
         String sql = "UPDATE filo SET nome=?, descricao=? WHERE id=?";
 
@@ -70,7 +70,7 @@ public class FiloDAO {
             ps.executeUpdate();
         }
     }
-
+// deleta o filo usando o id pra buscar 
     public void deletar(int id) throws Exception {
         String sql = "DELETE FROM filo WHERE id=?";
 

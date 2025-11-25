@@ -14,18 +14,19 @@ public class CadastroDAO {
         String sql = "INSERT INTO cadastro (nomePessoa, nomeUsuario, email, senha, tipoUsuario) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = ConnectionFactory.getConnection();
+        //conecta ao banco
              PreparedStatement ps = con.prepareStatement(sql)) {
-
+                // vai setando as informações do cadastro 
             ps.setString(1, c.getNomePessoa());
             ps.setString(2, c.getNomeUsuario());
             ps.setString(3, c.getEmail());
             ps.setString(4, c.getSenha());
             ps.setString(5, c.getTipoUsuario());
-
-            ps.executeUpdate();
+            
+            ps.executeUpdate();//atualiza
         }
     }
-
+    //busca por nome de usuario(user)
     public Cadastro buscarPorUsuario(String nomeUsuario) throws SQLException {
         String sql = "SELECT * FROM cadastro WHERE nomeUsuario = ?";
 
@@ -35,7 +36,7 @@ public class CadastroDAO {
             ps.setString(1, nomeUsuario);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
+            if (rs.next()) {//retorna infos do cadastro
                 Cadastro c = new Cadastro();
                 c.setId(rs.getInt("id"));
                 c.setNomePessoa(rs.getString("nomePessoa"));

@@ -2,6 +2,8 @@
 CREATE DATABASE IF NOT EXISTS tcb_bio;
 USE tcb_bio;
 
+--delete cascade meio q apaga td oq ta relacionado a tabela "mãe";
+
 
 CREATE TABLE IF NOT EXISTS cadastro (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,10 +19,9 @@ CREATE TABLE IF NOT EXISTS perfil (
     id INT AUTO_INCREMENT PRIMARY KEY,
     idCadastro INT NOT NULL,
     totalAcertos INT DEFAULT 0,
-    FOREIGN KEY (idCadastro) REFERENCES cadastro(id) ON DELETE CASCADE
+    FOREIGN KEY (idCadastro) REFERENCES cadastro(id) ON DELETE CASCADE 
 );
 
--- Tabela reino
 CREATE TABLE IF NOT EXISTS reino (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS filo (
     FOREIGN KEY (idReino) REFERENCES reino(id) ON DELETE CASCADE
 );
 
--- Tabela classe
+
 CREATE TABLE IF NOT EXISTS classe (
     id_classe INT AUTO_INCREMENT PRIMARY KEY,
     id_filo INT NOT NULL,
@@ -43,7 +44,6 @@ CREATE TABLE IF NOT EXISTS classe (
     FOREIGN KEY (id_filo) REFERENCES filo(id) ON DELETE CASCADE
 );
 
--- Tabela organismo
 CREATE TABLE IF NOT EXISTS organismo (
     id_organismo INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS questao (
     FOREIGN KEY (idReino) REFERENCES reino(id) ON DELETE CASCADE
 );
 
--- Tabela alternativa
 CREATE TABLE IF NOT EXISTS alternativa (
     id INT AUTO_INCREMENT PRIMARY KEY,
     idQuestao INT NOT NULL,
@@ -68,11 +67,14 @@ CREATE TABLE IF NOT EXISTS alternativa (
     correta BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (idQuestao) REFERENCES questao(id) ON DELETE CASCADE
 );
-
-CREATE TABLE IF NOT EXISTS questao_alternativa (
+CREATE TABLE IF NOT EXISTS perfil_questao (
+    id_perfil INT NOT NULL,
     id_questao INT NOT NULL,
     id_alternativa INT NOT NULL,
-    PRIMARY KEY (id_questao, id_alternativa),
+    
+    PRIMARY KEY (id_perfil, id_questao),
+
+    FOREIGN KEY (id_perfil) REFERENCES perfil(id) ON DELETE CASCADE,
     FOREIGN KEY (id_questao) REFERENCES questao(id) ON DELETE CASCADE,
     FOREIGN KEY (id_alternativa) REFERENCES alternativa(id) ON DELETE CASCADE
 );

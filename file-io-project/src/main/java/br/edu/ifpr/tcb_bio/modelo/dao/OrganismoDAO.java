@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class OrganismoDAO {
-
+//insere o organismo e sua descricao
     public void inserir(Organismo org) throws SQLException {
         String sql = "INSERT INTO organismo (nome, descricao, id_classe) VALUES (?, ?, ?)";
 
@@ -21,7 +21,7 @@ public class OrganismoDAO {
             stmt.executeUpdate();
         }
     }
-
+//lista os organismos (nome, id e descricao) ja inseridos usando lista 
     public ArrayList<Organismo> listar() throws SQLException {
         String sql = "SELECT * FROM organismo";
         ArrayList<Organismo> lista = new ArrayList<>();
@@ -40,7 +40,7 @@ public class OrganismoDAO {
         }
         return lista;
     }
-
+//busca organismo por id e retorna suas informações
     public Organismo buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM organismo WHERE id_organismo = ?";
 

@@ -8,29 +8,34 @@ public class CadastroController {
     private CadastroDAO cadastroDAO = new CadastroDAO();
 
     public String cadastrar(Cadastro c) {
+        String respostaAoUser=null;
         try {
             if (c.getNomePessoa().isEmpty() ||
                 c.getNomeUsuario().isEmpty() ||
                 c.getSenha().isEmpty()) {
-
-                return "Preencha todos os campos!";
+                    respostaAoUser="Preencha todos os campos!";
+                return respostaAoUser;
             }
 
             if (c.getTipoUsuario() == null || c.getTipoUsuario().isEmpty()) {
-                return "Selecione o tipo do usuário!";
+                respostaAoUser="Selecione o tipo do usuário!";
+                return respostaAoUser;
             }
 
             Cadastro existente = cadastroDAO.buscarPorUsuario(c.getNomeUsuario());
             if (existente != null) {
-                return "Usuário já existe!";
+                respostaAoUser="Usuário já existente!";
+                return respostaAoUser;
             }
 
             cadastroDAO.inserir(c);
-            return "Cadastro realizado com sucesso!";
+            respostaAoUser="Cadastro realizado com sucesso!!!";
+            return respostaAoUser;
         }
         catch (Exception e) {
             e.printStackTrace();
-            return "Erro ao cadastrar: " + e.getMessage();
+            respostaAoUser="Erro ao cadastrar: " + e.getMessage();
+            return respostaAoUser;
         }
     }
 
