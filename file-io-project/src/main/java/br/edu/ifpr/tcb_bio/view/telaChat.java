@@ -200,29 +200,202 @@ public class telaChat {
         janela.repaint();
     }
 
-    // ------------------------- Tela Admin -------------------------
+    //daqui pra baixo vai ser só coisas que o admin vai poder fazer
+    // ------------------tela admin--------------// 
     public static void mostrarTelaAdmin(JFrame janela) {
-
         janela.getContentPane().removeAll();
         janela.repaint();
+        janela.setLayout(null);
+        janela.getContentPane().setBackground(Color.WHITE);
+    
+        // cabeçalho da tela
+        JLabel titulo = new JLabel("Painel do Administrador", SwingConstants.CENTER); 
+        titulo.setFont(new Font("Arial", Font.BOLD, 26));
+        titulo.setBounds(200, 40, 600, 50); 
+        janela.add(titulo); // adiciona o título à tela
+    
+        // botão "gerenciar questões" que leva o admin para a tela de gerenciar questões
+        JButton botaoQuestoes = new JButton("Gerenciar Questões"); 
+        botaoQuestoes.setBounds(350, 150, 300, 40); // define a posição do botão
+        botaoQuestoes.addActionListener(e -> mostrarTelaGerenciarQuestoes(janela)); 
+        janela.add(botaoQuestoes); // adiciona o botão à tela
+    
+        // botão "adicionar questão" para permitir ao admin adicionar questões
+        JButton botaoAdicionarQuestao = new JButton("Adicionar Questão");
+        botaoAdicionarQuestao.setBounds(350, 220, 300, 40); 
+        botaoAdicionarQuestao.addActionListener(e -> mostrarTelaAdicionarQuestao(janela)); // abrir a tela de adicionar questão
+        janela.add(botaoAdicionarQuestao); // adiciona o botão à tela
+    
+        // botão "ver usuários" para visualizar os usuários cadastrados
+        JButton botaoUsuarios = new JButton("Ver Usuários"); 
+        botaoUsuarios.setBounds(350, 290, 300, 40); // define a posição do botão
+        janela.add(botaoUsuarios); // adiciona o botão à tela
+    
+        // botão "sair" para voltar à tela inicial
+        JButton botaoVoltar = new JButton("Sair"); 
+        botaoVoltar.setBounds(350, 360, 300, 40); 
+        botaoVoltar.addActionListener(e -> criarTelaInicial(janela)); 
+        janela.add(botaoVoltar); 
+    
+        janela.revalidate(); // atualiza a tela
+        janela.repaint(); // redesenha a tela
+    }
+    
 
-        JLabel titulo = new JLabel("Área Administrativa", SwingConstants.CENTER);
-        titulo.setBounds(100, 50, 400, 30);
-
-        JButton botaoQuestoes = new JButton("Gerenciar Questões");
-        botaoQuestoes.setBounds(150, 120, 200, 40);
-
-        JButton botaoReinos = new JButton("Voltar");
-        botaoReinos.setBounds(150, 180, 200, 40);
-
-        botaoReinos.addActionListener(e -> mostrarTelaReinos(janela));
-
+    public static void mostrarTelaGerenciarQuestoes(JFrame janela){
+        janela.getContentPane().removeAll();
+        janela.repaint();
+        janela.setLayout(null);
+        janela.getContentPane().setBackground(Color.WHITE);
+    
+        JLabel titulo = new JLabel("Questões cadastradas", SwingConstants.CENTER); // swingconstants.center deixa no centro da tela 
+        titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        titulo.setBounds(200, 40, 600, 40);
         janela.add(titulo);
-        janela.add(botaoQuestoes);
-        janela.add(botaoReinos);
-
+    
+        // chama o controller para pegar as questões do banco
+        QuestaoController questaoController = new QuestaoController();
+        ArrayList<Questao> lista = questaoController.listar();
+    
+        int y = 120; // posição inicial para o primeiro botão, fizemos isso para que não fique todos os botões um em cima do outro
+        for(Questao q : lista) {
+            // exibindo id e enunciado da questão para que o admin saiba qual o id na hora que quiser fazer alguma função (deletar, inserir, editar)
+            JLabel lbl = new JLabel("ID: " + q.getIdQuestao() + " - " + q.getEnunciado());
+            lbl.setBounds(100, y, 800, 30);
+            janela.add(lbl);
+    
+            JButton botaoAdicionarQuestao = new JButton("Adicionar Questão");
+            botaoAdicionarQuestao.setBounds(350, 100, 300, 40); // posição do botão
+            botaoAdicionarQuestao.addActionListener(e -> mostrarTelaAdicionarQuestao(janela)); // abre tela de adicionar
+            janela.add(botaoAdicionarQuestao);
+    
+            // botão pra editar a questão
+            JButton editar = new JButton("Editar");
+            editar.setBounds(650, y, 100, 25);
+            editar.addActionListener(e -> editarQuestao(janela, q));
+            janela.add(editar);
+    
+            // botão pra excluir a questão
+            JButton excluir = new JButton("Excluir");
+            excluir.setBounds(760, y, 100, 25);
+            excluir.addActionListener(e -> excluirQuestao(janela, q.getIdQuestao()));
+            janela.add(excluir);
+    
+            y += 40; // aqui que ele vai somar para o próximo item e não ficar um em cima do outro
+        }
+    
+        // botão para voltar ao painel do admin
+        JButton voltar = new JButton("Voltar");
+        voltar.setBounds(350, y + 40, 300, 40);
+        voltar.addActionListener(e -> mostrarTelaAdmin(janela));
+        janela.add(voltar);
+    
         janela.revalidate();
         janela.repaint();
+    }
+    
+    public static void mostrarTelaAdicionarQuestao(JFrame janela) {
+        janela.getContentPane().removeAll();// vai remover a tela anterior
+        janela.repaint();// cria uma nova
+        janela.setLayout(null);
+        janela.getContentPane().setBackground(Color.WHITE);
+    
+        JLabel titulo = new JLabel("Adicionar Nova Questão", SwingConstants.CENTER); // enuciado da questao no meio da tela 
+        titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        titulo.setBounds(200, 40, 600, 40);
+        janela.add(titulo);
+    
+        // criando o campo da nova questão
+        JLabel labelEnunciado = new JLabel("Enunciado:");
+        labelEnunciado.setBounds(100, 120, 100, 30);
+        janela.add(labelEnunciado);
+    
+        JTextField campoEnunciado = new JTextField(); //é um campo que vai receber um texto
+        campoEnunciado.setBounds(200, 120, 500, 30); // de tamanho tal
+        janela.add(campoEnunciado);
+    
+        // botão pra adicionar a nova questão
+        JButton adicionar = new JButton("Adicionar");
+        adicionar.setBounds(350, 200, 300, 40);
+        adicionar.addActionListener(e -> {
+            String enunciado = campoEnunciado.getText(); // deixa o admin colocar a questão que vai ser coocada dentro do banco
+    
+            if (enunciado.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(janela, "Enunciado não pode ser vazio!");
+                return;
+            }
+            Questao novaQuestao = new Questao();
+            novaQuestao.setEnunciado(enunciado);
+    
+            QuestaoController questaoController = new QuestaoController();
+            try {
+                questaoController.inserir(novaQuestao, 1); // 1 é o id do reino
+                JOptionPane.showMessageDialog(janela, "Questão adicionada com sucesso!"); // só pra avisar q foi adicionada 
+                mostrarTelaGerenciarQuestoes(janela); // atualiza a lista de questões
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(janela, "Erro ao adicionar questão: " + ex.getMessage()); //avisa que nao foi 
+            }
+        });
+        janela.add(adicionar);
+    
+        // botão para voltar à tela anterior
+        JButton voltar = new JButton("Voltar");
+        voltar.setBounds(350, 260, 300, 40);
+        voltar.addActionListener(e -> mostrarTelaGerenciarQuestoes(janela)); // volta para a lista de questões
+        janela.add(voltar);
+    
+        janela.revalidate();
+        janela.repaint();
+    }
+    
+    public static void editarQuestao(JFrame janela, Questao questao) {
+        janela.getContentPane().removeAll();
+        janela.repaint();
+        janela.setLayout(null);
+        janela.getContentPane().setBackground(Color.WHITE);
+    
+        JLabel titulo = new JLabel("Editar Questão", SwingConstants.CENTER);
+        titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        titulo.setBounds(200, 40, 600, 40);
+        janela.add(titulo);
+
+        JLabel labelEnunciado = new JLabel("Enunciado:");
+        labelEnunciado.setBounds(100, 120, 100, 30);
+        janela.add(labelEnunciado);
+    
+        //aqui vai mostrar o enunciado "antigo". Pensamos em deixar o admin editar o enunciado porque acontece de conceitos, carc., mudarem conforme os anos
+        JTextField campoEnunciado = new JTextField(questao.getEnunciado());
+        campoEnunciado.setBounds(200, 120, 500, 30);
+        janela.add(campoEnunciado);
+    
+        // aqui o admin vai clicar em salvar para atualizar o enunciado no banco e atualizar a lista de questões
+        JButton salvar = new JButton("Salvar");
+        salvar.setBounds(350, 200, 300, 40);
+        salvar.addActionListener(e -> {
+            questao.setEnunciado(campoEnunciado.getText()); // Atualiza o enunciado
+            new QuestaoController().atualizar(questao.getIdQuestao(), questao); // Atualiza o banco
+            mostrarTelaGerenciarQuestoes(janela); // volta pra tela de gerenciamento
+        });
+        janela.add(salvar);
+    
+        JButton voltar = new JButton("Voltar");
+        voltar.setBounds(350, 260, 300, 40);
+        voltar.addActionListener(e -> mostrarTelaGerenciarQuestoes(janela)); // volta para as quesotes listadas
+        janela.add(voltar);
+    
+        janela.revalidate();
+        janela.repaint();
+    }
+
+    public static void excluirQuestao(JFrame janela, int idQuestao) {
+        new QuestaoController().deletar(idQuestao); // Deleta a questão do banco
+            mostrarTelaGerenciarQuestoes(janela); // Atualiza a tela com as questões restantes
+        
+    }
+
+    public static void mostrarTelaGerenciarReinos(){
+
+
     }
 
     // ------------------------- Tela Reinos -------------------------
