@@ -1,0 +1,38 @@
+--inserts iniciais para que tenha um admin já registrado:
+insert into cadastro (nomePessoa, nomeUsuario, email, senha, tipoUsuario) values 
+('emanuella zaniolo', 'emazeite', 'ema.zaniolo@gmail.com', 'manuBiolya', 'ADMIN');
+insert into cadastro (nomePessoa, nomeUsuario, email, senha, tipoUsuario) values
+('julia miranda', 'juliaMiranda', 'juliamiranda@gmail.com', 'juh@123', 'ADMIN');
+--reinos iniciais(por enquanto só adicionamos reino plantae e animal, futuramente adicionaremos os restantes)
+insert into reino (nome, descricao) values 
+('plantae', 'O Reino Plantae, ou reino vegetal, é composto por organismos eucariontes, pluricelulares e autotróficos, que produzem seu próprio alimento através da fotossíntese. Suas células possuem parede celular de celulose, cloroplastos e vacúolos. As plantas são essenciais para a vida na Terra, sendo responsáveis pela produção de oxigênio e alimento, além de participarem do ciclo da água e da manutenção da temperatura. ');
+insert into reino (nome, descricao) values 
+('animalia', 'O Reino Animalia (ou Reino Animal) é composto por organismos pluricelulares, eucariontes e heterotróficos (não produzem seu próprio alimento). As características principais incluem a capacidade de se mover, responder a estímulos do ambiente e respiração aeróbia (que utiliza oxigênio). O reino é diversificado e se divide principalmente em vertebrados (com coluna vertebral) e invertebrados (sem coluna vertebral). ');
+--filos relacionados ao reino plantae:
+insert into filo (idReino, nome, descricao) values
+(1, 'Briófitas', 'As briófitas sao plantas de pequeno porte que não possuem vasos condutores de seiva.');
+insert into filo (idReino, nome, descricao) values
+('1','Pteridófitas', 'As pteridófitas são plantas que já possuem vasos condutores de seiva, como as samambaias.');
+insert into filo (idReino, nome, descricao) values
+('1', 'Gimnospermas', 'As gimnospermas são plantas com sementes nuas, como os pinheiros.');
+insert into filo (idReino, nome, descricao) values
+('1','Angiospermas', 'As angiospermas são as plantas mais evoluídas que possuem flores e frutos');
+--filos do reino animalia:
+insert into filo (idReino, nome, descricao) values
+(2, 'Poríferos','Animais aquáticos fixos com corpo poroso, como as esponjas.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Cnidários','Possuem tentáculos com células urticantes e um sistema nervoso simples. Incluem medusas e corais.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Platelmintos','Vermes achatados, como as tênias e esquistossomos.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Nematódeos','Vermes cilíndricos, em sua maioria parasitas.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Anelídeos','Animais com corpo segmentado em anéis, como as minhocas e sanguessugas.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Equinodermos','Animais marinhos com simetria radial e esqueleto interno, como estrelas-do-mar e ouriços-do-mar.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Moluscos','Animais de corpo mole, que podem ter uma concha externa ou interna, como lesmas, polvos e ostras.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Artrópodes','O maior filo, com características como corpo segmentado, um exoesqueleto rígido de quitina e patas articuladas. Inclui insetos, aracnídeos e crustáceos.');
+insert into filo (idReino, nome, descricao) values
+(2, 'Cordados','Este filo inclui vertebrados como peixes, anfíbios, répteis, aves e mamíferos.');
