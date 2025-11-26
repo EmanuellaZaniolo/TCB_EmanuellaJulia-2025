@@ -7,6 +7,15 @@ public class Reino {
     private String nomeReino;
     private String descricao;
     private ArrayList<Filo> filos;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Reino() {
         filos = new ArrayList<>();

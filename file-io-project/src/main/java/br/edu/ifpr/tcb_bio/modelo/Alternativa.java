@@ -4,6 +4,15 @@ public class Alternativa {
 
     private String texto;
     private boolean correta;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Alternativa() {
 

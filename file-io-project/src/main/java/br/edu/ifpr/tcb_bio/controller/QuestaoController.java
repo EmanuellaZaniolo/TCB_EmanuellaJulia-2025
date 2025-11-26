@@ -20,7 +20,15 @@ public class QuestaoController {
             e.printStackTrace();
         }
     }
-
+    public ArrayList<Questao> buscarPorReino(int idReino) {
+        try {
+            return questaoDAO.buscarPorReino(idReino);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+    
     public ArrayList<Questao> listar() {
         try {
             return questaoDAO.listar();

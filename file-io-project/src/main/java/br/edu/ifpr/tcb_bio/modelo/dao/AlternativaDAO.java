@@ -20,6 +20,27 @@ public class AlternativaDAO {
             ps.executeUpdate();
         }
     }
+    public ArrayList<Alternativa> listarPorQuestao(int idQuestao) throws Exception {
+        ArrayList<Alternativa> lista = new ArrayList<>();
+        String sql = "SELECT * FROM alternativa WHERE idQuestao = ?";
+    
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+    
+            ps.setInt(1, idQuestao);
+            ResultSet rs = ps.executeQuery();
+    
+            while (rs.next()) {
+                Alternativa a = new Alternativa();
+                a.setId(rs.getInt("id"));
+                a.setTexto(rs.getString("texto"));
+                a.setCorreta(rs.getBoolean("correta"));
+                lista.add(a);
+            }
+        }
+        return lista;
+    }
+    
 // apenas lsista as alternativas falando se é correta ou não
     public ArrayList<Alternativa> listar() throws Exception {
         ArrayList<Alternativa> lista = new ArrayList<>();

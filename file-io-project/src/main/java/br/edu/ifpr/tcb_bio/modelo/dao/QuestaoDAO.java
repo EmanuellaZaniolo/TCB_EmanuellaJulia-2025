@@ -19,6 +19,26 @@ public class QuestaoDAO {
             ps.executeUpdate();
         }
     }
+    public ArrayList<Questao> buscarPorReino(int idReino) throws Exception {
+        ArrayList<Questao> lista = new ArrayList<>();
+        String sql = "SELECT * FROM questao WHERE idReino = ?";
+    
+        try (Connection con = ConnectionFactory.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+    
+            ps.setInt(1, idReino);
+            ResultSet rs = ps.executeQuery();
+    
+            while (rs.next()) {
+                Questao q = new Questao();
+                q.setId(rs.getInt("id"));
+                q.setEnunciado(rs.getString("enunciado"));
+                lista.add(q);
+            }
+        }
+        return lista;
+    }
+    
 
     public ArrayList<Questao> listar() throws Exception {
         ArrayList<Questao> lista = new ArrayList<>();

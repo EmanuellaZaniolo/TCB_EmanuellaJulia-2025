@@ -7,6 +7,15 @@ public class Questao {
     private String enunciado;
     private ArrayList<Alternativa> alternativas;
     private Reino reino;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Questao() {
         alternativas = new ArrayList<>();
