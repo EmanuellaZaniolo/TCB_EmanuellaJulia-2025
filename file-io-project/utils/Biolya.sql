@@ -2,9 +2,6 @@
 CREATE DATABASE IF NOT EXISTS tcb_bio;
 USE tcb_bio;
 
---delete cascade meio q apaga td oq ta relacionado a tabela "mãe";
-
-
 CREATE TABLE IF NOT EXISTS cadastro (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nomePessoa VARCHAR(100) NOT NULL,

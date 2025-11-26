@@ -160,8 +160,10 @@ public class telaChat {
             String usuario = campoUsuario.getText();
             String senha = new String(campoSenha.getPassword());
 
+
             Cadastro c = cadastroController.login(usuario, senha);
-            Login login =
+            Login login = new Login(usuario, senha);
+
 
             if (c != null) {
                 usuarioLogado = new Perfil(c);
