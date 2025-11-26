@@ -71,10 +71,10 @@ public class telaChat {
         JTextField campoNome = new JTextField();
         campoNome.setBounds(280, 200, 480, 50);
 
-         JLabel labelEmail = new JLabel("Email:");
+        JLabel labelEmail = new JLabel("Email:");
         labelEmail.setBounds(200, 280, 80, 50);
         JTextField campoEmail = new JTextField();
-        campoEmail.setBounds(280, 280,480, 50);
+        campoEmail.setBounds(280, 280, 480, 50);
 
         JLabel labelUsuario = new JLabel("Usuário:");
         labelUsuario.setBounds(200, 360, 80, 50);
@@ -102,8 +102,8 @@ public class telaChat {
             cadastro.setNomePessoa(nome);
             cadastro.setNomeUsuario(usuario);
             cadastro.setSenha(senha);
-            cadastro.setEmail(email);     // temporário
-            cadastro.setTipoUsuario("ALUNO");   // padrão
+            cadastro.setEmail(email); // temporário
+            cadastro.setTipoUsuario("ALUNO"); // padrão
 
             String resultado = cadastroController.cadastrar(cadastro);
             JOptionPane.showMessageDialog(janela, resultado);
@@ -140,7 +140,7 @@ public class telaChat {
         JLabel labelOrdem = new JLabel("Preencha os espaços abaixo para fazer o seu login no Byolia");
         labelOrdem.setBounds(335, 90, 1000000, 50);
 
-         JLabel labelUsuario = new JLabel("Usuário:");
+        JLabel labelUsuario = new JLabel("Usuário:");
         labelUsuario.setBounds(200, 200, 80, 50);
         JTextField campoUsuario = new JTextField();
         campoUsuario.setBounds(280, 200, 480, 50);
@@ -148,7 +148,7 @@ public class telaChat {
         JLabel labelSenha = new JLabel("Senha:");
         labelSenha.setBounds(200, 280, 80, 50);
         JPasswordField campoSenha = new JPasswordField();
-        campoSenha.setBounds(280, 280,480, 50);
+        campoSenha.setBounds(280, 280, 480, 50);
 
         JButton botaoConfirmar = new JButton("Login");
         botaoConfirmar.setBounds(310, 360, 200, 40);
@@ -160,15 +160,15 @@ public class telaChat {
             String usuario = campoUsuario.getText();
             String senha = new String(campoSenha.getPassword());
 
-
             Cadastro c = cadastroController.login(usuario, senha);
             Login login = new Login(usuario, senha);
 
-
             if (c != null) {
                 usuarioLogado = new Perfil(c);
-                if(login.ehAdmin(c)){ // o usuário só poderá ter acesso a certas funcoes se for ADMIN, o tipo do usuario já é definido no database
+                if (login.ehAdmin(c)) { // o usuário só poderá ter acesso a certas funcoes se for ADMIN, o tipo do
+                                        // usuario já é definido no database
                     mostrarTelaAdmin(janela);
+                    return;
 
                 }
                 mostrarTelaReinos(janela);
@@ -191,26 +191,55 @@ public class telaChat {
         janela.repaint();
     }
 
-    public static void mostrarTelaAdmin(JFrame janela ){
+    // |------------------------------------TELA ADMIN-------------------------------------
+    public static void mostrarTelaAdmin(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
+        janela.setLayout(null);
         janela.getContentPane().setBackground(Color.WHITE);
+    
+        JLabel titulo = new JLabel("Painel do Administrador", SwingConstants.CENTER);
+        titulo.setFont(new Font("Arial", Font.BOLD, 24));
+        titulo.setBounds(300, 50, 400, 40);
+        janela.add(titulo);
+    
+        JButton botaoGerenciarUsuarios = new JButton("Listar Questões");
+        botaoGerenciarUsuarios.setBounds(350, 150, 300, 40);
+        janela.add(botaoGerenciarUsuarios);
+    
+        JButton botaoGerenciarQuestoes = new JButton("Gerenciar Questões");
+        botaoGerenciarQuestoes.setBounds(350, 220, 300, 40);
+        janela.add(botaoGerenciarQuestoes);
+        
+        JButton botaoGerenciarAdmins = new JButton("Gerenciar Admins");
+        botaoGerenciarAdmins.setBounds(350, 290, 300, 40);
+        janela.add(botaoGerenciarAdmins);
 
+        JButton botaoVoltar = new JButton("Sair para a tela inicial");
+        botaoVoltar.setBounds(350, 290, 300, 40);
+        botaoVoltar.addActionListener(e -> criarTelaInicial(janela));
+        janela.add(botaoVoltar);
+    
+        janela.revalidate();
+        janela.repaint();
     }
+    
 
+
+    // daqui pra baixo serão as funções que o aluno poderá ter 
     // ------------------------- Tela Reinos -------------------------
     public static void mostrarTelaReinos(JFrame janela) {
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("Escolha um Reino", SwingConstants.CENTER);
+        JLabel titulo = new JLabel("Escolha um dos reinos abaixo :", SwingConstants.CENTER);
         titulo.setBounds(100, 50, 300, 30);
         janela.add(titulo);
 
         ArrayList<Reino> reinos = criarReinosExemplo();
 
-        int y = 100;
+        int y = 100; // esse y ele para os botões do reiro não fiquem um em cima do outro(=antes de fazer ele não estavamos entendendo o que estava de errado e o porque os demais reinos não estavajm aparecendo)
         for (Reino reino : reinos) {
             JButton botaoReino = new JButton(reino.getNomeReino());
             botaoReino.setBounds(150, y, 200, 30);
@@ -219,10 +248,16 @@ public class telaChat {
             y += 40;
         }
 
-        JButton botaoPerfil = new JButton("Perfil");
+        JButton botaoPerfil = new JButton("Meu Perfil");
         botaoPerfil.setBounds(200, y + 20, 100, 30);
         botaoPerfil.addActionListener(e -> mostrarTelaPerfil(janela));
+
         janela.add(botaoPerfil);
+
+        JButton botaoVoltar = new JButton("Voltar");
+        botaoVoltar.setBounds(530, 360, 200, 40);
+        botaoVoltar.addActionListener(e -> mostrarTelaLogin(janela));
+        janela.add(botaoVoltar);
 
         janela.revalidate();
         janela.repaint();
@@ -277,8 +312,9 @@ public class telaChat {
         janela.repaint();
         janela.getContentPane().setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("Perfil de " + usuarioLogado.getCadastro().getNomeUsuario(), SwingConstants.CENTER);
-        titulo.setBounds(100, 50, 300, 30);
+        JLabel titulo = new JLabel("Bem-vindo(a) aluno(a)!", SwingConstants.CENTER);
+        titulo.setFont(new Font("Arial", Font.BOLD, 24));
+        titulo.setBounds(300, 50, 400, 40);
         janela.add(titulo);
 
         JLabel acertos = new JLabel("Acertos: " + usuarioLogado.getTotalAcertos(), SwingConstants.CENTER);

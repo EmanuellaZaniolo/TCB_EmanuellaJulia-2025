@@ -42,11 +42,7 @@ public class Login {
 
     // verifica se o usuário é admin ou aluno, essa validação vai ser necessária para deixar possível certas funçoẽs ao usuário
     public boolean ehAdmin(Cadastro cadastro){
-        if(cadastro.getTipoUsuario() == "ADMIN"){
-            return true;
-
-        }
-        return false;
+        return "ADMIN".equalsIgnoreCase(cadastro.getTipoUsuario());
     }
 
 
