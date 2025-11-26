@@ -36,3 +36,7 @@ insert into filo (idReino, nome, descricao) values
 (2, 'Artrópodes','O maior filo, com características como corpo segmentado, um exoesqueleto rígido de quitina e patas articuladas. Inclui insetos, aracnídeos e crustáceos.');
 insert into filo (idReino, nome, descricao) values
 (2, 'Cordados','Este filo inclui vertebrados como peixes, anfíbios, répteis, aves e mamíferos.');
+
+--questoes 
+insert into questao (idReino, enunciado) values (2, '1. (ENEM) Técnicos de uma estação de monitoramento marinho notaram que após uma forte tempestade a turbidez da água aumentou muito. Algumas espécies locais, porém, mantiveram-se estáveis na comunidade bentônica devido à sua capacidade de filtrar partículas e reciclar matéria orgânica. Considerando a organização corporal desses organismos, assinale a alternativa que indica corretamente o filo ao qual eles pertencem e a característica responsável por essa função ecológica.');
+-- alternativa para ela

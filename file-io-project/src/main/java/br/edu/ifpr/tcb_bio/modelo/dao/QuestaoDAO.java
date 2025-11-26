@@ -39,41 +39,45 @@ public class QuestaoDAO {
         return lista;
     }
     
-
     public ArrayList<Questao> listar() throws Exception {
         ArrayList<Questao> lista = new ArrayList<>();
         String sql = "SELECT * FROM questao";
-
+    
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
+    
             while (rs.next()) {
                 Questao q = new Questao();
+                q.setId(rs.getInt("id")); 
                 q.setEnunciado(rs.getString("enunciado"));
+              
                 lista.add(q);
             }
         }
         return lista;
     }
-
+    
+    
     public Questao buscarPorId(int id) throws Exception {
         String sql = "SELECT * FROM questao WHERE id=?";
-
+    
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-
+    
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
+    
             if (rs.next()) {
                 Questao q = new Questao();
+                q.setId(rs.getInt("id"));
                 q.setEnunciado(rs.getString("enunciado"));
                 return q;
             }
         }
         return null;
     }
+    
 
     public void atualizar(int id, Questao q) throws Exception {
         String sql = "UPDATE questao SET enunciado=? WHERE id=?";

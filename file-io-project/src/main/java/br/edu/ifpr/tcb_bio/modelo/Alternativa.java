@@ -5,6 +5,15 @@ public class Alternativa {
     private String texto;
     private boolean correta;
     private int id;
+    private int idQuestao;
+
+    public int getIdQuestao() {
+        return idQuestao;
+    }
+
+    public void setIdQuestao(int idQuestao) {
+        this.idQuestao = idQuestao;
+    }
 
     public int getId() {
         return id;

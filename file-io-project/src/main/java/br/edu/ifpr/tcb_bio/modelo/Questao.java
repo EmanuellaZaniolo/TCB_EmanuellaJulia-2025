@@ -6,7 +6,7 @@ public class Questao {
 
     private String enunciado;
     private ArrayList<Alternativa> alternativas;
-    private Reino reino;
+    private int idReino;
     private int id;
 
     public int getId() {
@@ -37,13 +37,16 @@ public class Questao {
         this.alternativas = alternativas;
     }
 
-    public Reino getReino() {
-        return reino;
-    }
+  
 
-    public void setReino(Reino reino) {
-        this.reino = reino;
+    public int getIdReino() {
+        return idReino;
     }
+    
+    public void setIdReino(int idReino) {
+        this.idReino = idReino;
+    }
+    
 
     public void adicionarAlternativa(Alternativa alt) {
         alternativas.add(alt);
