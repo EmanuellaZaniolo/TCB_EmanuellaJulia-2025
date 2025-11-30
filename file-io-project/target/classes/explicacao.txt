@@ -1,0 +1,3 @@
+Esse novo folder foi somente para colocar a imagem usando uma função do java, pois do jeito que aprendemos ano passado não estava indo,
+então pesquisei pra ver outra maneira de colocar a imagem n nosso programa.Usando o resources eu garanto que em qualquer computador consigo a
+acessar a imagem, não acontecendo erros.
