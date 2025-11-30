@@ -8,34 +8,21 @@ public class CadastroController {
     private CadastroDAO cadastroDAO = new CadastroDAO();
 
     public String cadastrar(Cadastro c) {
-        String respostaAoUser=null;
         try {
-            if (c.getNomePessoa().isEmpty() ||
-                c.getNomeUsuario().isEmpty() ||
-                c.getSenha().isEmpty()) {
-                    respostaAoUser="Preencha todos os campos!";
-                return respostaAoUser;
+            if (c.getNomePessoa() == null || c.getNomePessoa().isEmpty() ||
+                c.getNomeUsuario() == null || c.getNomeUsuario().isEmpty() ||
+                c.getSenha() == null || c.getSenha().isEmpty()) {
+                return "Preencha todos os campos!";
             }
-
-            if (c.getTipoUsuario() == null || c.getTipoUsuario().isEmpty()) {
-                respostaAoUser="Selecione o tipo do usuário!";
-                return respostaAoUser;
-            }
-
             Cadastro existente = cadastroDAO.buscarPorUsuario(c.getNomeUsuario());
-            if (existente != null) {
-                respostaAoUser="Usuário já existente!";
-                return respostaAoUser;
-            }
+            if (existente != null) return "Usuário já existente!";
 
-            cadastroDAO.inserir(c);
-            respostaAoUser="Cadastro realizado com sucesso!!!";
-            return respostaAoUser;
-        }
-        catch (Exception e) {
+            int idGerado = cadastroDAO.inserir(c);
+            if (idGerado > 0) return "Cadastro realizado com sucesso!";
+            else return "Erro ao cadastrar";
+        } catch (Exception e) {
             e.printStackTrace();
-            respostaAoUser="Erro ao cadastrar: " + e.getMessage();
-            return respostaAoUser;
+            return "Erro ao cadastrar: " + e.getMessage();
         }
     }
 
@@ -43,9 +30,7 @@ public class CadastroController {
         try {
             Cadastro c = cadastroDAO.buscarPorUsuario(usuario);
             if (c == null) return null;
-
             if (!c.getSenha().equals(senha)) return null;
-
             return c;
         } catch (Exception e) {
             e.printStackTrace();

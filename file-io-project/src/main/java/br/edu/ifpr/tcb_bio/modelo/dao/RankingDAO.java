@@ -1,7 +1,7 @@
 package br.edu.ifpr.tcb_bio.modelo.dao;
 
-import br.edu.ifpr.tcb_bio.modelo.ConnectionFactory;
 import br.edu.ifpr.tcb_bio.modelo.Perfil;
+import br.edu.ifpr.tcb_bio.modelo.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,12 +9,11 @@ import java.util.ArrayList;
 public class RankingDAO {
 
     public ArrayList<Perfil> listarRanking() throws SQLException {
-        String sql = """
-            SELECT c.nome, p.total_acertos 
-            FROM perfil p
-            JOIN cadastro c ON p.id_cadastro = c.id_cadastro
-            ORDER BY total_acertos DESC
-        """;
+        String sql = ""
+            + "SELECT c.nomePessoa as nome, p.totalAcertos "
+            + "FROM perfil p "
+            + "JOIN cadastro c ON p.idCadastro = c.id "
+            + "ORDER BY p.totalAcertos DESC";
 
         ArrayList<Perfil> lista = new ArrayList<>();
 
@@ -24,7 +23,7 @@ public class RankingDAO {
 
             while (rs.next()) {
                 Perfil perfil = new Perfil();
-                perfil.setTotalAcertos(rs.getInt("total_acertos"));
+                perfil.setTotalAcertos(rs.getInt("totalAcertos"));
                 lista.add(perfil);
             }
         }

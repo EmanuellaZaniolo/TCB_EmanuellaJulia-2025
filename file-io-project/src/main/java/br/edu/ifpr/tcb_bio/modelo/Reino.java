@@ -45,8 +45,12 @@ public class Reino {
         this.filos = filos;
     }
 
-    // Adiciona um filo à lista
     public void adicionarFilo(Filo filo) {
         filos.add(filo);
+    }
+
+    @Override
+    public String toString() {
+        return nomeReino;
     }
 }

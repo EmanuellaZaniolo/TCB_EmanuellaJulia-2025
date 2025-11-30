@@ -13,30 +13,22 @@ public class PerfilController {
         this.perfilDAO = new PerfilDAO();
     }
 
-    public void inserir(Perfil perfil, int idCadastro) {
+    public int inserir(Perfil perfil, int idCadastro) {
         try {
-            perfilDAO.inserir(perfil, idCadastro);
+            return perfilDAO.inserir(perfil, idCadastro);
         } catch (Exception e) {
             e.printStackTrace();
+            return -1;
         }
     }
 
-    public ArrayList<Perfil> listar() {
+    public Perfil buscarPorCadastroId(int idCadastro) {
         try {
-            return perfilDAO.listar();
+            return perfilDAO.buscarPorCadastroId(idCadastro);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return new ArrayList<>();
-    }
-
-    public Perfil buscarPorId(int id) {
-        try {
-            return perfilDAO.buscarPorId(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public void atualizar(int id, Perfil perfil) {
@@ -47,11 +39,12 @@ public class PerfilController {
         }
     }
 
-    public void deletar(int id) {
+    public ArrayList<Perfil> listar() {
         try {
-            perfilDAO.deletar(id);
+            return perfilDAO.listar();
         } catch (Exception e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 }

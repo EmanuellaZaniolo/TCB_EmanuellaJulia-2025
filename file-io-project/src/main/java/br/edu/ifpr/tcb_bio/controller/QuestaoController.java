@@ -13,13 +13,15 @@ public class QuestaoController {
         this.questaoDAO = new QuestaoDAO();
     }
 
-    public void inserir(Questao questao, int idReino) {
+    public int inserir(Questao questao, int idReino) {
         try {
-            questaoDAO.inserir(questao, idReino);
+            return questaoDAO.inserir(questao, idReino);
         } catch (Exception e) {
             e.printStackTrace();
+            return -1;
         }
     }
+
     public ArrayList<Questao> buscarPorReino(int idReino) {
         try {
             return questaoDAO.buscarPorReino(idReino);
@@ -28,14 +30,14 @@ public class QuestaoController {
             return new ArrayList<>();
         }
     }
-    
+
     public ArrayList<Questao> listar() {
         try {
             return questaoDAO.listar();
         } catch (Exception e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
     }
 
     public Questao buscarPorId(int id) {
@@ -43,8 +45,8 @@ public class QuestaoController {
             return questaoDAO.buscarPorId(id);
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public void atualizar(int id, Questao questao) {
