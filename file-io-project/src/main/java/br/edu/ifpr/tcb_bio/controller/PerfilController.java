@@ -47,4 +47,17 @@ public class PerfilController {
             return new ArrayList<>();
         }
     }
+
+   public void deletar(int id) {
+    try {
+        perfilDAO.deletar(id);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+
+    
 }

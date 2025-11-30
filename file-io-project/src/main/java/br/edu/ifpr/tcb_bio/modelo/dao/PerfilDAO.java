@@ -86,4 +86,15 @@ public class PerfilDAO {
             return false;
         }
     }
+
+   public void deletar(int id) throws Exception {
+    String sql = "DELETE FROM perfil WHERE id=?";
+
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
+}
 }
