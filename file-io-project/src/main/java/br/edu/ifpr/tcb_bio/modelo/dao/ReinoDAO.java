@@ -8,59 +8,62 @@ import java.util.ArrayList;
 
 public class ReinoDAO {
 
+    // metodo para listar todos os reinos no banco de dados
     public ArrayList<Reino> listar() throws Exception {
         ArrayList<Reino> lista = new ArrayList<>();
-        String sql = "SELECT * FROM reino";
+        String sql = "select * from reino";  // consulta para pegar todos os reinos
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Reino r = new Reino();
-                // leitura tolerante de nomes de coluna
-                r.setId(getIntSafe(rs, "id", -1));
-                r.setNomeReino(getStringSafe(rs, "nomeReino", "nome"));
-                r.setDescricao(getStringSafe(rs, "descricao", "descr"));
-                lista.add(r);
+             ResultSet rs = ps.executeQuery()) {  // executa a consulta e obtém o resultado
+            while (rs.next()) {  // enquanto houver resultados
+                Reino r = new Reino();  // cria um novo objeto Reino
+                r.setId(getIntSafe(rs, "id", -1));  // seta o id do reino
+                r.setNomeReino(getStringSafe(rs, "nomeReino", "nome"));  // seta o nome do reino
+                r.setDescricao(getStringSafe(rs, "descricao", "descr"));  // seta a descrição do reino
+                lista.add(r);  // adiciona o reino à lista
             }
         }
-        return lista;
+        return lista;  // retorna a lista de reinos
     }
 
+    // metodo para buscar um reino pelo id
     public Reino buscarPorId(int id) throws Exception {
-        String sql = "SELECT * FROM reino WHERE id = ?";
+        String sql = "select * from reino where id = ?";  // consulta para buscar um reino pelo id
         try (Connection con = ConnectionFactory.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Reino r = new Reino();
-                    r.setId(getIntSafe(rs, "id", -1));
-                    r.setNomeReino(getStringSafe(rs, "nomeReino", "nome"));
-                    r.setDescricao(getStringSafe(rs, "descricao", "descr"));
-                    return r;
+            ps.setInt(1, id);  // define o id do reino a ser buscado
+            try (ResultSet rs = ps.executeQuery()) {  // executa a consulta
+                if (rs.next()) {  // se encontrar o reino
+                    Reino r = new Reino();  // cria um novo objeto Reino
+                    r.setId(getIntSafe(rs, "id", -1));  // seta o id do reino
+                    r.setNomeReino(getStringSafe(rs, "nomeReino", "nome"));  // seta o nome do reino
+                    r.setDescricao(getStringSafe(rs, "descricao", "descr"));  // seta a descrição do reino
+                    return r;  // retorna o reino encontrado
                 }
             }
         }
-        return null;
+        return null;  // retorna null caso não encontre o reino
     }
 
+    // metodo auxiliar para ler uma string de forma segura do ResultSet
     private String getStringSafe(ResultSet rs, String primary, String fallback) {
         try {
-            return rs.getString(primary);
+            return rs.getString(primary);  // tenta obter a string usando o nome da coluna primary
         } catch (SQLException e) {
             try {
-                return rs.getString(fallback);
+                return rs.getString(fallback);  // caso não encontre, tenta usar o nome da coluna fallback
             } catch (SQLException ex) {
-                return null;
+                return null;  // retorna null se não encontrar nenhuma das colunas
             }
         }
     }
 
+    // metodo auxiliar para ler um inteiro de forma segura do ResultSet
     private int getIntSafe(ResultSet rs, String primary, int fallback) {
         try {
-            return rs.getInt(primary);
+            return rs.getInt(primary);  // tenta obter o inteiro usando o nome da coluna primary
         } catch (SQLException e) {
-            return fallback;
+            return fallback;  // retorna o valor fallback caso haja algum erro
         }
     }
 }

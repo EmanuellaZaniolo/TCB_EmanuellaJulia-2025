@@ -4,7 +4,6 @@ import br.edu.ifpr.tcb_bio.controller.AlternativaController;
 import br.edu.ifpr.tcb_bio.controller.CadastroController;
 import br.edu.ifpr.tcb_bio.controller.PerfilController;
 import br.edu.ifpr.tcb_bio.controller.QuestaoController;
-import br.edu.ifpr.tcb_bio.controller.RankingController;
 import br.edu.ifpr.tcb_bio.controller.ReinoController;
 import br.edu.ifpr.tcb_bio.modelo.Alternativa;
 import br.edu.ifpr.tcb_bio.modelo.Cadastro;
@@ -23,7 +22,6 @@ public class telaChat {
     private static final AlternativaController alternativaController = new AlternativaController();
     private static final PerfilController perfilController = new PerfilController();
     private static final ReinoController reinoController = new ReinoController();
-    private static final RankingController rankingController = new RankingController();
     private static Perfil usuarioLogado;
 
     // Janela principal (referência única usada por todas as telas)
@@ -622,119 +620,112 @@ public class telaChat {
         janela.repaint();
     }
     //--------------------Mostrar usuarios(ADMIN) ------------------//
+    //esse que nao est adando certo 
+    //quase tudo comentadop so falta achar o erro(nao esta iumprimindo nenhum perfil na tela )
+    
+    
     private static void mostrarUsuarios() {
-   
-    // limpa a tela
-    janela.getContentPane().removeAll();
-    janela.repaint();
-    janela.setLayout(null);
-    janela.getContentPane().setBackground(Color.WHITE);
-
-    // título da tela
-    JLabel titulo = new JLabel("Perfis Cadastrados", SwingConstants.CENTER);
-    titulo.setFont(new Font("Arial", Font.BOLD, 24));
-    titulo.setBounds(200, 40, 600, 40);
-    janela.add(titulo);
-
-    // pega todos os perfis do database
-    ArrayList<Perfil> perfis = perfilController.listar();
-
-    int y = 120;
-
-    // cabeçalho
-    JLabel cabecalho = new JLabel("ID      | Nome                        | Tipo");
-    cabecalho.setFont(new Font("Arial", Font.BOLD, 16));
-    cabecalho.setBounds(100, y - 30, 600, 25);
-    janela.add(cabecalho);
-
-    // lista perfil por perfil
-    for (Perfil p : perfis) {
-        JLabel lbl = new JLabel(
-                p.getId() + "  |  " +
-                p.getCadastro().getNomePessoa() + "  |  " +
-                p.getCadastro().getTipoUsuario()
-        );
-        lbl.setBounds(100, y, 600, 25);
-        janela.add(lbl);// add o texto na tela
-
-        // botão editar perfil
-        JButton editar = new JButton("Editar");
-        editar.setBounds(710, y, 80, 25);
-        editar.addActionListener(e -> mostrarTelaEditarPerfil(p));
-        janela.add(editar);
-
-        // botão excluir
-        JButton deletar = new JButton("Excluir");// cria o botao excluir
-        deletar.setBounds(800, y, 80, 25);
-        deletar.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(janela,
-                    "Excluir este perfil?",
-                    "Confirmar",
-                    JOptionPane.YES_NO_OPTION);// caixinha que pergunta se ele realmente quer deletar permanentemente o perfil
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                perfilController.deletar(p.getId());
-                mostrarUsuarios(); // recarrega a lista
+        // Limpa a tela
+        janela.getContentPane().removeAll();
+        janela.repaint();
+        janela.setLayout(null);
+        janela.setSize(1300, 900);
+        janela.getContentPane().setBackground(Color.WHITE);
+    
+    
+        JLabel titulo = new JLabel("Perfis Cadastrados", SwingConstants.CENTER);//cabeçalho
+        titulo.setFont(new Font("Arial", Font.BOLD, 28));
+        titulo.setBounds(200, 20, 900, 50);
+        janela.add(titulo);//add
+    
+        // Pega todos os perfis
+        ArrayList<Perfil> perfis = perfilController.listar();
+        System.out.println("Número de perfis encontrados: " + perfis.size());  // Verifique aqui o número de perfis, fizemos isso pra ver se ele estava pegando osperfis do database, mas ele nao imprimiu isso na tela 
+    
+        if (perfis.isEmpty()) {
+            JLabel aviso = new JLabel("Nenhum perfil encontrado", SwingConstants.CENTER);
+            aviso.setFont(new Font("Arial", Font.BOLD, 24));
+            aviso.setBounds(200, 100, 900, 40);
+            janela.add(aviso);
+        } else {
+            // Painel principal para exibir os perfis
+            JPanel painelLista = new JPanel();
+            painelLista.setLayout(new BoxLayout(painelLista, BoxLayout.Y_AXIS));
+            painelLista.setBackground(Color.WHITE);
+    
+            // Itera sobre os perfis e exibe os dados
+            for (Perfil p : perfis) {
+                // Bloco para cada perfil
+                JPanel bloco = new JPanel();
+                bloco.setLayout(new BorderLayout(10, 10));
+                bloco.setPreferredSize(new Dimension(1000, 60));
+                bloco.setMaximumSize(new Dimension(1100, 60));
+                bloco.setBackground(new Color(245, 245, 245));
+                bloco.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+    
+                // Exibe o ID e o nome do usuário
+                JLabel lbl = new JLabel("ID: " + p.getId() + " - " + p.getCadastro().getNomePessoa());
+                lbl.setFont(new Font("Arial", Font.PLAIN, 16));
+                lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                bloco.add(lbl, BorderLayout.CENTER);
+    
+                // Adiciona o bloco ao painel da lista
+                painelLista.add(Box.createVerticalStrut(10));
+                painelLista.add(bloco);
             }
-        });
-        janela.add(deletar);
-
-        y += 35;
+    
+            // Cria um JScrollPane para permitir rolagem caso a lista de usuários seja grande
+            JScrollPane scroll = new JScrollPane(painelLista);
+            scroll.setBounds(50, 100, 1200, 700);
+            scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    
+            janela.add(scroll);
+        }
+    
+        janela.revalidate();
+        janela.repaint();
     }
-
-    // botão voltar
-    JButton voltar = new JButton("Voltar");
-    voltar.setBounds(350, y + 50, 300, 40);
-    voltar.addActionListener(e -> mostrarTelaAdmin());
-    janela.add(voltar);
-
-    janela.revalidate();
-    janela.repaint();
-
-
-}
-
+    
+    
     // ------------------------------------Editar perfil(ADMIN)-----------------------------//
+    //tudo comentado, só falta funcionar
+    // esse nao deu certto pois o ver usuario, nao lista os usarios , deconfiamos que o prooblema està  no perfil e nao na nossa tela de chat
    private static void mostrarTelaEditarPerfil(Perfil perfil) {
-    // limpa a tela
     janela.getContentPane().removeAll();
     janela.repaint();
     janela.setLayout(null);
     janela.getContentPane().setBackground(Color.WHITE);
 
-    // título da tela
-    JLabel titulo = new JLabel("Editar Perfil - ID: " + perfil.getId(), SwingConstants.CENTER);
+    JLabel titulo = new JLabel("Editar Perfil - ID: " + perfil.getId(), SwingConstants.CENTER);//cabeçalho da tela
     titulo.setFont(new Font("Arial", Font.BOLD, 22));
     titulo.setBounds(200, 40, 600, 40);
     janela.add(titulo);
 
-    // campo nome
-    JLabel labelNome = new JLabel("Nome:");
+    JLabel labelNome = new JLabel("Nome:");//cria o titulo
     labelNome.setBounds(100, 120, 80, 25);
 
-    JTextField campoNome = new JTextField(perfil.getCadastro().getNomePessoa());
+    JTextField campoNome = new JTextField(perfil.getCadastro().getNomePessoa());// o usuario digita
     campoNome.setBounds(180, 120, 500, 25);
 
-    // campo tipo (ADMIN / ALUNO)
-    JLabel labelTipo = new JLabel("Tipo:");
+    JLabel labelTipo = new JLabel("Tipo:");// cria o titilo do espaço de digitar
     labelTipo.setBounds(100, 170, 80, 25);
 
     String[] tipos = {"ADMIN", "ALUNO"};
-    JComboBox<String> campoTipo = new JComboBox<>(tipos);
+    JComboBox<String> campoTipo = new JComboBox<>(tipos); // usuario seleciona qual dos dois
     campoTipo.setBounds(180, 170, 200, 25);
     campoTipo.setSelectedItem(perfil.getCadastro().getTipoUsuario());
 
     // botão salvar
     JButton salvar = new JButton("Salvar");
     salvar.setBounds(350, 260, 300, 40);
-    salvar.addActionListener(e -> {
+    salvar.addActionListener(e -> { // se clicar o botão vai fazer as seguntes ações
         // atualiza o nome
         perfil.getCadastro().setNomePessoa(campoNome.getText());
 
         // atualiza o tipo
         perfil.getCadastro().setTipoUsuario((String) campoTipo.getSelectedItem());
 
-        // salva no banco
+        // salva no database
         perfilController.atualizar(perfil.getId(), perfil);
 
         // volta para a lista de perfis
@@ -746,7 +737,7 @@ public class telaChat {
     voltar.setBounds(350, 320, 300, 40);
     voltar.addActionListener(e -> mostrarUsuarios());
 
-    // adiciona itens na tela
+    // adiciona todos os itens na tela
     janela.add(labelNome);
     janela.add(campoNome);
     janela.add(labelTipo);
@@ -759,6 +750,7 @@ public class telaChat {
 }
 
     // ------------------ Mostrar Questões para o aluno ------------------//
+    // esse da formatado certo 3e comentado
     private static void mostrarTelaReinos(Perfil usuario) {
         janela.getContentPane().removeAll();
         janela.repaint();
@@ -787,13 +779,6 @@ public class telaChat {
             janela.add(botao);//adicionar os botões
             y += 40; // para q os prox. fiquem um em baixo do outro
         }
-
-
-        JButton botaoRanking = new JButton("Ranking");
-        botaoRanking.setBounds(400, y + 60, 100, 30);
-        botaoRanking.addActionListener(e -> mostrarTelaRanking(usuario));
-        janela.add(botaoRanking);
-
         JButton botaoPerfil = new JButton("Perfil"); // botao clicavel de perfil
         botaoPerfil.setBounds(500, y + 60, 100, 30);
         botaoPerfil.addActionListener(e -> mostrarTelaPerfil(usuario));// mostra a tela de perfil
@@ -805,7 +790,7 @@ public class telaChat {
     }
 
     //------------------------------tela de questoes------------------------------------//
-    //formatado certo
+    //formatado certo e comentado
 
       // método principal que inicia a sequência de questões
     private static void mostrarTelaQuestoes(Reino reino) {
@@ -886,7 +871,7 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
 
 
     // ------------------ Tela Perfil ------------------//
-    // esse ta formato certo
+    // esse ta formato certo e comentado 
     private static void mostrarTelaPerfil(Perfil usu) {// passei o usuario pq antes estvaa dando erro no usuario que estava sendo conytabilizado os acertos
         janela.getContentPane().removeAll();
         janela.repaint();
@@ -919,61 +904,6 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
         janela.revalidate();
         janela.repaint();
     }
-
-    //---------------------------------tela Ranking ---------------------------------//
-    // precisa arrumar
-
-private static void mostrarTelaRanking(Perfil usuario) {
-    // limpa a tela e prepara pra mostrar o ranking
-    janela.getContentPane().removeAll();
-    janela.repaint();
-    janela.setLayout(null);
-    janela.getContentPane().setBackground(Color.WHITE);
-
-    // cria o titulo da tela
-    JLabel titulo = new JLabel("Ranking de Usuarios", SwingConstants.CENTER);
-    titulo.setFont(new Font("Arial", Font.BOLD, 22)); // define a fonte e tamanho do titulo
-    titulo.setBounds(200, 40, 600, 40); // posiciona o titulo na tela
-    janela.add(titulo);
-
-    // cria a lista de perfis que vao aparecer no ranking
-    ArrayList<Perfil> perfis;
-    try {
-        perfis = rankingController.listarRanking().getPerfis(); // pega a lista de perfis do ranking
-    } catch (Exception e) { // se der erro cria lista vazia pra nao quebrar
-        perfis = new ArrayList<>();
-        e.printStackTrace(); // mostra no console qual foi o erro
-    }
-
-    int y = 120; // posicao vertical inicial pra listar os usuarios
-    // cria o cabecalho da tabela de ranking
-    JLabel cabecalho = new JLabel("Posicao | Nome | Total de Acertos");
-    cabecalho.setBounds(400, y - 30, 600, 25); // coloca cabecalho acima da primeira linha
-    janela.add(cabecalho);
-
-    int posicao = 1; // inicializa a posicao no ranking
-    // percorre todos os perfis e adiciona na tela
-    for (Perfil p : perfis) {
-        String nome = (p.getCadastro() != null) ? p.getCadastro().getNomePessoa() : "Anonimo"; // verifica se tem nome cadastrado
-        JLabel lbl = new JLabel(posicao + " | " + nome + " | " + p.getTotalAcertos()); // monta linha com posicao, nome e acertos
-        lbl.setBounds(400, y, 600, 25); // define posicao da linha
-        janela.add(lbl); // adiciona na tela
-        y += 30; // aumenta posicao vertical pra proxima linha
-        posicao++; // incrementa posicao do ranking
-    }
-
-    // cria botao pra voltar pra tela de reinos
-    JButton voltar = new JButton("Voltar");
-    voltar.setBounds(350, y + 40, 300, 40); // posiciona botao abaixo da lista
-    voltar.addActionListener(e -> mostrarTelaReinos(usuario)); // volta pra tela de reinos quando clicar
-    janela.add(voltar);
-
-    // atualiza a tela
-    janela.revalidate();
-    janela.repaint();
-}
-
-
 
     // ------------------ Utilitário: reinos de exemplo ------------------
     private static ArrayList<Reino> criarReinosExemplo() {
