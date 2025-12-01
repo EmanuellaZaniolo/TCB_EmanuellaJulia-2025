@@ -4,6 +4,7 @@ import br.edu.ifpr.tcb_bio.controller.AlternativaController;
 import br.edu.ifpr.tcb_bio.controller.CadastroController;
 import br.edu.ifpr.tcb_bio.controller.PerfilController;
 import br.edu.ifpr.tcb_bio.controller.QuestaoController;
+import br.edu.ifpr.tcb_bio.controller.RankingController;
 import br.edu.ifpr.tcb_bio.controller.ReinoController;
 import br.edu.ifpr.tcb_bio.modelo.Alternativa;
 import br.edu.ifpr.tcb_bio.modelo.Cadastro;
@@ -14,13 +15,6 @@ import br.edu.ifpr.tcb_bio.modelo.Reino;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-
-/**
- * Tela principal (view) da aplicação. Arquivo refatorado para baixo acoplamento,
- * uso centralizado de controllers e persistência com banco de dados.
- *
- * Substitua este arquivo no seu projeto em: br/edu/ifpr/tcb_bio/view/telaChat.java
- */
 public class telaChat {
 
     // ----------------- CONTROLLERS (instâncias únicas) -----------------
@@ -29,7 +23,7 @@ public class telaChat {
     private static final AlternativaController alternativaController = new AlternativaController();
     private static final PerfilController perfilController = new PerfilController();
     private static final ReinoController reinoController = new ReinoController();
-
+    private static final RankingController rankingController = new RankingController();
     private static Perfil usuarioLogado;
 
     // Janela principal (referência única usada por todas as telas)
@@ -205,7 +199,7 @@ public class telaChat {
                 if ("ADMIN".equalsIgnoreCase(c.getTipoUsuario())) {
                     mostrarTelaAdmin();
                 } else {
-                    mostrarTelaReinos();
+                    mostrarTelaReinos(usuarioLogado);
                 }
 
             } else {
@@ -652,6 +646,7 @@ public class telaChat {
 
 }
 
+    // ------------------------------------Editar perfil-----------------------------//
    private static void mostrarTelaEditarPerfil(Perfil perfil) {
     // limpa a tela
     janela.getContentPane().removeAll();
@@ -715,124 +710,209 @@ public class telaChat {
     janela.repaint();
 }
 
-    // ------------------ Mostrar Questões para o aluno ------------------
-    private static void mostrarTelaReinos() {
+    // ------------------ Mostrar Questões para o aluno ------------------//
+    private static void mostrarTelaReinos(Perfil usuario) {
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.setLayout(null);
         janela.getContentPane().setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("Escolha um Reino", SwingConstants.CENTER);
+        JLabel titulo = new JLabel("Escolha um Reino", SwingConstants.CENTER);// cabeçalho da tela
         titulo.setBounds(100, 50, 300, 30);
         janela.add(titulo);
 
-        ArrayList<Reino> reinos;
+        ArrayList<Reino> reinos; // lista todos os reinos
         try {
             reinos = reinoController.listar();
         } catch (Exception e) {
-            reinos = criarReinosExemplo();
+            reinos = criarReinosExemplo();// serve como plano b
         }
 
         int y = 100;
         for (Reino reino : reinos) {
-            JButton botao = new JButton(reino.getNomeReino());
+            JButton botao = new JButton(reino.getNomeReino());// pra cada reino tem um botao clicavel
             botao.setBounds(150, y, 200, 30);
-            botao.addActionListener(e -> mostrarTelaQuestoes(reino));
-            janela.add(botao);
-            y += 40;
+            botao.addActionListener(e -> mostrarTelaQuestoes(reino));//mostra a tela de questoes
+            janela.add(botao);//adicionar os botões
+            y += 40; // para q os prox. fiquem um em baixo do outro
         }
 
-        JButton botaoPerfil = new JButton("Perfil");
+        JButton botaoPerfil = new JButton("Perfil"); // botao clicavel de perfil
         botaoPerfil.setBounds(200, y + 20, 100, 30);
-        botaoPerfil.addActionListener(e -> mostrarTelaPerfil());
-        janela.add(botaoPerfil);
+        botaoPerfil.addActionListener(e -> mostrarTelaPerfil(usuario));// mostra a tela de perfil
+        janela.add(botaoPerfil);// add na tela
+
+        JButton botaoRanking = new JButton("Ranking");
+        botaoRanking.setBounds(320, y + 60, 100, 30);
+        botaoRanking.addActionListener(e -> mostrarTelaRanking(usuario));
+        janela.add(botaoRanking);
+
 
         janela.revalidate();
         janela.repaint();
     }
 
+    //------------------------------tela de questoes------------------------------------//
+
+      // método principal que inicia a sequência de questões
     private static void mostrarTelaQuestoes(Reino reino) {
-        janela.getContentPane().removeAll();
-        janela.repaint();
-        janela.setLayout(null);
-        janela.getContentPane().setBackground(Color.WHITE);
+    // pega todas as questoes do reino que o aluno escolheu
+    ArrayList<Questao> questoes = questaoController.buscarPorReino(reino.getId());
 
-        ArrayList<Questao> questoes = questaoController.buscarPorReino(reino.getId());
-
-        if (questoes.isEmpty()) {
-            JOptionPane.showMessageDialog(janela, "Nenhuma questão cadastrada para este reino.");
-            mostrarTelaReinos();
-            return;
-        }
-
-        // pega 1ª questão (pode randomizar futuramente)
-        Questao q = questoes.get(0);
-
-        // carregar alternativas
-        ArrayList<Alternativa> alternativas = alternativaController.listarPorQuestao(q.getId());
-        q.setAlternativas(alternativas);
-
-        JLabel labelQuestao = new JLabel("<html><body style='width:800px'>" + q.getEnunciado() + "</body></html>", SwingConstants.CENTER);
-        labelQuestao.setBounds(50, 20, 900, 60);
-        janela.add(labelQuestao);
-
-        int y = 120;
-        for (Alternativa alt : alternativas) {
-            JButton botao = new JButton(alt.getTexto());
-            botao.setBounds(150, y, 600, 30);
-            botao.addActionListener(e -> {
-                if (alt.isCorreta()) {
-                    usuarioLogado.adicionarAcerto();
-                    // atualiza no banco: busca perfil pelo cadastro e atualiza totalAcertos
-                    try {
-                        Perfil pBanco = perfilController.buscarPorCadastroId(usuarioLogado.getCadastro().getId());
-                        if (pBanco != null) {
-                            pBanco.setTotalAcertos(usuarioLogado.getTotalAcertos());
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    JOptionPane.showMessageDialog(janela, "Correto!");
-                } else {
-                    JOptionPane.showMessageDialog(janela, "Errado!");
-                }
-                mostrarTelaReinos();
-            });
-            janela.add(botao);
-            y += 40;
-        }
-
-        janela.revalidate();
-        janela.repaint();
+    // se nao tiver nenhuma questao no banco avisa o aluno e volta para a tela de reinos
+    if (questoes.isEmpty()) {
+        JOptionPane.showMessageDialog(janela, "Nenhuma questão cadastrada para este reino.");
+        mostrarTelaReinos(usuarioLogado);// volta para a tela de reinos
+        return;
     }
+
+    // chama a versão que mostra a questão por índice, iniciando na primeira
+    mostrarQuestaoPorIndice(reino, questoes, 0);
+}
+
+// nova versão que mostra cada questão individualmente, baseada no índice
+private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> questoes, int indice) {
+    janela.getContentPane().removeAll();
+    janela.repaint();
+    janela.setLayout(null);
+    janela.getContentPane().setBackground(Color.WHITE);
+
+    // pega a questão atual da lista
+    Questao q = questoes.get(indice);
+
+    // pega as alternativas da questao
+    ArrayList<Alternativa> alternativas = alternativaController.listarPorQuestao(q.getId());
+    q.setAlternativas(alternativas); // associa as alternativas à questão
+
+    // cria um campo de texto para colocar o enunciado da questao
+    JLabel titulo = new JLabel(q.getEnunciado(), SwingConstants.CENTER);// mostra a questão
+    titulo.setBounds(100, 50, 300, 30);// seta a posicao que vai aparecer
+    janela.add(titulo);
+
+    // cria botões para cada alternativa
+    int y = 120; // posição vertical inicial
+    for (Alternativa alt : alternativas) { // usamos para aparecer todas as alternativas na tela 
+        JButton botao = new JButton(alt.getTexto()); // cria um botao clicavel para todas as alternativas 
+        botao.setBounds(150, y, 600, 30);//seta os botoes 
+
+        // Ação quando o usuário clica na alternativa
+        botao.addActionListener(e -> {
+            if (alt.isCorreta()) { // vai ser responsável por verificar se a questão está ou não correta 
+                usuarioLogado.adicionarAcerto(); // se estiver correta acrescenta um acerto no perfil do aluno 
+
+                // atualiza o perfil com o total de acertos
+                try {
+                    Perfil p = perfilController.buscarPorCadastroId(usuarioLogado.getCadastro().getId()); // vai procurar o perfil que acertou 
+                    if (p != null) {
+                        p.setTotalAcertos(usuarioLogado.getTotalAcertos());// incrementa o acerto ......... futuramente poderíamos colocar peso na questão (ficar estilo ENEM)
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();// se não der certo, vai falar que não deu certo 
+                }
+
+                JOptionPane.showMessageDialog(janela, "Correto!"); // exibe essa mensagem se deu certo
+            } else { // se estiver errada
+                JOptionPane.showMessageDialog(janela, "Errado!");//exibe essa mensagem se deu errado
+            }
+
+            // verifica se tem próxima questão
+            if (indice + 1 < questoes.size()) { // colocamos um indice aqui pq antes o nosso programa apresntava uma questao e voltava para a tela de reinos 
+                mostrarQuestaoPorIndice(reino, questoes, indice + 1); // mostra a próxima questão
+            } else {
+                mostrarTelaReinos(usuarioLogado); // se acabou, volta para a tela de reinos
+            }
+        });
+
+        janela.add(botao);
+        y += 40; // aumenta a posição vertical para o próximo botão
+    }
+
+    janela.revalidate();
+    janela.repaint();
+}
+
 
     // ------------------ Tela Perfil ------------------
-    private static void mostrarTelaPerfil() {
+    private static void mostrarTelaPerfil(Perfil usu) {// passei o usuario pq antes estvaa dando erro no usuario que estava sendo conytabilizado os acertos
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.setLayout(null);
         janela.getContentPane().setBackground(Color.WHITE);
 
-        String nomeUsuario = (usuarioLogado != null && usuarioLogado.getCadastro() != null)
-                ? usuarioLogado.getCadastro().getNomeUsuario() : "Usuário";
+        String nomeUsuario = (usu != null && usu.getCadastro() != null)
+                ? usu.getCadastro().getNomeUsuario() : "Usuário";
 
-        JLabel titulo = new JLabel("Perfil de " + nomeUsuario, SwingConstants.CENTER);
+        JLabel titulo = new JLabel("Perfil de " + nomeUsuario, SwingConstants.CENTER); // cabeçalho da tela 
         titulo.setBounds(100, 50, 300, 30);
-        janela.add(titulo);
+        janela.add(titulo);//add o cabeçalho
 
-        int acertos = (usuarioLogado != null) ? usuarioLogado.getTotalAcertos() : 0;
-        JLabel labelAcertos = new JLabel("Acertos: " + acertos, SwingConstants.CENTER);
+        int acertos = (usu != null) ? usu.getTotalAcertos() : 0; // pega os acertos do perfil passado se for nulo (nunca vai ser o caso) vai assumir como 0 acertos
+        JLabel labelAcertos = new JLabel("Acertos: " + acertos, SwingConstants.CENTER); //aparece na tela o total de acertos 
         labelAcertos.setBounds(100, 100, 300, 30);
-        janela.add(labelAcertos);
+        janela.add(labelAcertos);//add na tela 
 
-        JButton botaoVoltar = new JButton("Voltar");
+        JButton botaoVoltar = new JButton("Voltar");//botao clicável
         botaoVoltar.setBounds(200, 150, 100, 30);
-        botaoVoltar.addActionListener(e -> mostrarTelaReinos());
+        botaoVoltar.addActionListener(e -> mostrarTelaReinos(usu));//vai voltar para a tela de reinos
         janela.add(botaoVoltar);
 
         janela.revalidate();
         janela.repaint();
     }
+
+    //---------------------------------tela Ranking ---------------------------------//
+//---------------------------------tela Ranking ---------------------------------//
+private static void mostrarTelaRanking(Perfil usuario) {
+    // limpa a tela e prepara pra mostrar o ranking
+    janela.getContentPane().removeAll();
+    janela.repaint();
+    janela.setLayout(null);
+    janela.getContentPane().setBackground(Color.WHITE);
+
+    // cria o titulo da tela
+    JLabel titulo = new JLabel("Ranking de Usuarios", SwingConstants.CENTER);
+    titulo.setFont(new Font("Arial", Font.BOLD, 22)); // define a fonte e tamanho do titulo
+    titulo.setBounds(200, 40, 600, 40); // posiciona o titulo na tela
+    janela.add(titulo);
+
+    // cria a lista de perfis que vao aparecer no ranking
+    ArrayList<Perfil> perfis;
+    try {
+        perfis = rankingController.listarRanking().getPerfis(); // pega a lista de perfis do ranking
+    } catch (Exception e) { // se der erro cria lista vazia pra nao quebrar
+        perfis = new ArrayList<>();
+        e.printStackTrace(); // mostra no console qual foi o erro
+    }
+
+    int y = 120; // posicao vertical inicial pra listar os usuarios
+    // cria o cabecalho da tabela de ranking
+    JLabel cabecalho = new JLabel("Posicao | Nome | Total de Acertos");
+    cabecalho.setBounds(100, y - 30, 600, 25); // coloca cabecalho acima da primeira linha
+    janela.add(cabecalho);
+
+    int posicao = 1; // inicializa a posicao no ranking
+    // percorre todos os perfis e adiciona na tela
+    for (Perfil p : perfis) {
+        String nome = (p.getCadastro() != null) ? p.getCadastro().getNomePessoa() : "Anonimo"; // verifica se tem nome cadastrado
+        JLabel lbl = new JLabel(posicao + " | " + nome + " | " + p.getTotalAcertos()); // monta linha com posicao, nome e acertos
+        lbl.setBounds(100, y, 600, 25); // define posicao da linha
+        janela.add(lbl); // adiciona na tela
+        y += 30; // aumenta posicao vertical pra proxima linha
+        posicao++; // incrementa posicao do ranking
+    }
+
+    // cria botao pra voltar pra tela de reinos
+    JButton voltar = new JButton("Voltar");
+    voltar.setBounds(350, y + 40, 300, 40); // posiciona botao abaixo da lista
+    voltar.addActionListener(e -> mostrarTelaReinos(usuario)); // volta pra tela de reinos quando clicar
+    janela.add(voltar);
+
+    // atualiza a tela
+    janela.revalidate();
+    janela.repaint();
+}
+
+
 
     // ------------------ Utilitário: reinos de exemplo ------------------
     private static ArrayList<Reino> criarReinosExemplo() {
