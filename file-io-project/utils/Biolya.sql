@@ -17,12 +17,20 @@ CREATE TABLE IF NOT EXISTS perfil (
     idCadastro INT NOT NULL,
     totalAcertos INT DEFAULT 0,
     FOREIGN KEY (idCadastro) REFERENCES cadastro(id) ON DELETE CASCADE 
-);
+)
 
 CREATE TABLE IF NOT EXISTS reino (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao TEXT
+);
+
+CREATE TABLE IF NOT EXISTS filo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idReino INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    FOREIGN KEY (idReino) REFERENCES reino(id) ON DELETE CASCADE
 );
 
 
