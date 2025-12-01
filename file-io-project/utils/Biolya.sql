@@ -24,6 +24,12 @@ CREATE TABLE IF NOT EXISTS reino (
     nome VARCHAR(100) NOT NULL,
     descricao TEXT
 );
+CREATE TABLE ranking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    idCadastro INT NOT NULL,  
+    totalAcertos INT NOT NULL, 
+    FOREIGN KEY (idCadastro) REFERENCES cadastro(id)
+);
 
 CREATE TABLE IF NOT EXISTS filo (
     id INT AUTO_INCREMENT PRIMARY KEY,
