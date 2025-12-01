@@ -294,86 +294,84 @@ public class telaChat {
 
     //-------------------------------listar-------------------//
     private static void mostrarTelaListagem() {
-        janela.getContentPane().removeAll();
-        janela.repaint();
-        janela.setLayout(null);
-        janela.getContentPane().setBackground(Color.WHITE);
-    
-        JLabel titulo = new JLabel("Questões Cadastradas", SwingConstants.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 22));
-        titulo.setBounds(200, 40, 600, 40);
-        janela.add(titulo);
-    
-        ArrayList<Questao> lista = questaoController.listar();
-    
-        // Painel que vai armazenar a lista
-        JPanel painelLista = new JPanel();
-        painelLista.setLayout(null);
-        painelLista.setPreferredSize(new Dimension(900, lista.size() * 60 + 100)); // altura automática
-        painelLista.setBackground(Color.WHITE);
-    
-        int y = 20;
-    
-        if (lista.isEmpty()) {
-            JLabel lbl = new JLabel("Não tem nenhuma questão cadastrada!", SwingConstants.CENTER);
-            lbl.setFont(new Font("Arial", Font.BOLD, 18));
-            lbl.setBounds(200, 200, 600, 40);
-            janela.add(lbl);
-    
-            JButton voltar = new JButton("Voltar");
-            voltar.setBounds(350, 260, 300, 40);
-            voltar.addActionListener(e -> mostrarTelaGerenciarQuestoes());
-            janela.add(voltar);
-    
-            janela.revalidate();
-            janela.repaint();
-            return;
-        }
-    
-        for (Questao q : lista) {
-            JLabel lbl = new JLabel("ID: " + q.getId() + " - " + q.getEnunciado());
-            lbl.setBounds(30, y, 800, 30);
-            painelLista.add(lbl);
-    
-            JButton alternativas = new JButton("Alternativas");
-            alternativas.setBounds(480, y, 120, 25);
-            alternativas.addActionListener(e -> listarPorQuestao.(q));
-            painelLista.add(alternativas);
-    
-            JButton editar = new JButton("Editar");
-            editar.setBounds(610, y, 100, 25);
-            editar.addActionListener(e -> editarQuestao(q));
-            painelLista.add(editar);
-    
-            JButton excluir = new JButton("Excluir");
-            excluir.setBounds(720, y, 100, 25);
-            excluir.addActionListener(e -> {
-                int confirm = JOptionPane.showConfirmDialog(janela,
-                        "Deseja realmente excluir a questão com ID : " + q.getId() + "?",
-                        "Confirmar exclusão",
-                        JOptionPane.YES_NO_OPTION);
-    
-                if (confirm == JOptionPane.YES_OPTION) {
-                    questaoController.deletar(q.getId());
-                    mostrarTelaListagem();
-                }
-            });
-            painelLista.add(excluir);
-    
-            y += 60;
-        }
-    
-        // CRIA A BARRA DE ROLAGEM
-        JScrollPane scroll = new JScrollPane(painelLista);
-        scroll.setBounds(50, 120, 900, 450);
-        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    
-        janela.add(scroll);
-    
-        janela.revalidate();
-        janela.repaint();
+    janela.getContentPane().removeAll();
+    janela.repaint();
+    janela.setLayout(null);
+    janela.setSize(1300, 900);
+    janela.getContentPane().setBackground(Color.WHITE);
+
+    JLabel titulo = new JLabel("Questões Cadastradas", SwingConstants.CENTER);
+    titulo.setFont(new Font("Arial", Font.BOLD, 28));
+    titulo.setBounds(200, 20, 900, 50);
+    janela.add(titulo);
+
+    ArrayList<Questao> lista = questaoController.listar();
+
+    JPanel painelLista = new JPanel();
+    painelLista.setLayout(new BoxLayout(painelLista, BoxLayout.Y_AXIS));
+    painelLista.setBackground(Color.WHITE);
+
+    for (Questao q : lista) {
+
+        // BLOCO ORGANIZADO
+        JPanel bloco = new JPanel();
+        bloco.setLayout(new BorderLayout(10, 10));
+        bloco.setPreferredSize(new Dimension(1000, 130));
+        bloco.setMaximumSize(new Dimension(1100, 130));
+        bloco.setBackground(new Color(245, 245, 245));
+        bloco.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+        // ENUNCIADO EM CIMA (LINHA LONGA)
+        JLabel lbl = new JLabel("ID: " + q.getId() + " - " + q.getEnunciado());
+        lbl.setFont(new Font("Arial", Font.PLAIN, 16));
+        lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        bloco.add(lbl, BorderLayout.NORTH);
+
+        // PAINEL DE BOTÕES EMBAIXO
+        JPanel painelBotoes = new JPanel();
+        painelBotoes.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
+        painelBotoes.setBackground(new Color(245, 245, 245));
+
+        JButton alternativas = new JButton("Alternativas");
+        alternativas.addActionListener(e -> mostrarTelaGerenciarAlternativas(q));
+
+        JButton editar = new JButton("Editar");
+        editar.addActionListener(e -> editarQuestao(q));
+
+        JButton excluir = new JButton("Excluir");
+        excluir.addActionListener(e -> {
+            int confirm = JOptionPane.showConfirmDialog(
+                janela,
+                "Deseja realmente excluir a questão com ID : " + q.getId() + "?",
+                "Confirmar exclusão",
+                JOptionPane.YES_NO_OPTION
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+                questaoController.deletar(q.getId());
+                mostrarTelaListagem();
+            }
+        });
+
+        painelBotoes.add(alternativas);
+        painelBotoes.add(editar);
+        painelBotoes.add(excluir);
+
+        bloco.add(painelBotoes, BorderLayout.SOUTH);
+
+        painelLista.add(Box.createVerticalStrut(10));
+        painelLista.add(bloco);
     }
-    
+
+    JScrollPane scroll = new JScrollPane(painelLista);
+    scroll.setBounds(50, 100, 1200, 700);
+    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+    janela.add(scroll);
+
+    janela.revalidate();
+    janela.repaint();
+}
+
 
     // ------------------ Adicionar Questão (Admin) ------------------
     private static void mostrarTelaAdicionarQuestao() {
