@@ -1,12 +1,12 @@
 package br.edu.ifpr.tcb_bio.modelo;
 
-import java.util.ArrayList;
+
 
 public class Reino {
 
     private String nomeReino;
     private String descricao;
-    private ArrayList<Filo> filos;
+  
     private int id;
 
     public int getId() {
@@ -17,10 +17,7 @@ public class Reino {
         this.id = id;
     }
 
-    public Reino() {
-        filos = new ArrayList<>();
-    }
-
+   
     public String getNomeReino() {
         return nomeReino;
     }
@@ -35,18 +32,6 @@ public class Reino {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public ArrayList<Filo> getFilos() {
-        return filos;
-    }
-
-    public void setFilos(ArrayList<Filo> filos) {
-        this.filos = filos;
-    }
-
-    public void adicionarFilo(Filo filo) {
-        filos.add(filo);
     }
 
     @Override
