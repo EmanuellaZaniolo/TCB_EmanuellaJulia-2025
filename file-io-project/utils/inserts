@@ -1,4 +1,11 @@
--- Questões - reino monera
+INSERT INTO reino (id, nome, descricao) VALUES
+(1, 'Monera', 'slamonera'),
+(2, 'Protista', 'slaprotista'),
+(3, 'Fungi', 'slafungi'),
+(4, 'Plantae', 'slaplantae'),
+(5, 'Animalia', 'slaanimalia');
+
+-- questao monera
 INSERT INTO questao (idReino, enunciado) VALUES
 (1, 'As bactérias são organismos pertencentes ao reino Monera. Qual das alternativas caracteriza CORRETAMENTE esses organismos?'),
 (1, 'O processo de reprodução mais comum entre as bactérias é:'),
@@ -11,79 +18,79 @@ INSERT INTO questao (idReino, enunciado) VALUES
 (1, 'O antibiótico penicilina atua principalmente sobre:'),
 (1, 'O processo de conjugação bacteriana consiste em:');
 
--- Inserts das alternativas - reino monera
+
 INSERT INTO alternativa (idQuestao, texto, correta) VALUES
--- alternativa 1
+-- Q1
 (1, 'Serem pluricelulares e eucariontes', FALSE),
 (1, 'Serem unicelulares e procariontes', TRUE),
 (1, 'Possuírem núcleo individualizado', FALSE),
 (1, 'Serem sempre autotróficas', FALSE),
 (1, 'Serem exclusivamente anaeróbias', FALSE),
 
--- alternativa 2
+-- Q2
 (2, 'Bipartição (divisão binária)', TRUE),
 (2, 'Brotamento', FALSE),
 (2, 'Fecundação interna', FALSE),
 (2, 'Clivagem embrionária', FALSE),
 (2, 'Esporulação sexuada', FALSE),
 
--- alternativa 3
+-- Q3
 (3, 'Fungos', FALSE),
 (3, 'Arqueias', TRUE),
 (3, 'Protistas', FALSE),
 (3, 'Animais primitivos', FALSE),
 (3, 'Briófitas', FALSE),
 
--- alternativa 4
+-- Q4
 (4, 'Produzirem toxinas para defesa', FALSE),
 (4, 'Reduzirem a biodiversidade marinha', FALSE),
 (4, 'Realizarem fotossíntese e liberarem oxigênio', TRUE),
 (4, 'Serem parasitas exclusivos', FALSE),
 (4, 'Comerem outros microrganismos', FALSE),
 
--- alternativa 5
+-- Q5
 (5, 'Ribossomos', FALSE),
 (5, 'Parede celular', FALSE),
 (5, 'Mitocôndrias', TRUE),
 (5, 'Membrana plasmática', FALSE),
 (5, 'Material genético', FALSE),
 
--- alternativa 6
+-- Q6
 (6, 'Perda de flagelos', FALSE),
 (6, 'Capacidade de realizar fotossíntese', FALSE),
 (6, 'Mutação e seleção natural', TRUE),
 (6, 'Aumento do tamanho corporal', FALSE),
 (6, 'Absorção de proteínas do ambiente', FALSE),
 
--- alternativa 7
+-- Q7
 (7, 'Ausência completa de parede celular', FALSE),
 (7, 'Possuírem cápsula protetora', FALSE),
 (7, 'Camada espessa de peptidoglicano', TRUE),
 (7, 'Possuírem DNA circular', FALSE),
 (7, 'Serem multicelulares', FALSE),
 
--- alternativa 8
+-- Q8
 (8, 'Possuírem núcleo', FALSE),
 (8, 'Viverem apenas em água doce', FALSE),
 (8, 'Diferenças bioquímicas e lipídicas na membrana', TRUE),
 (8, 'Serem exclusivamente parasitas', FALSE),
 (8, 'Fazerem fotossíntese', FALSE),
 
--- alternativa 9
+-- Q9
 (9, 'Parede celular de quitina', FALSE),
 (9, 'Síntese de proteínas', FALSE),
 (9, 'Parede celular de peptidoglicano', TRUE),
 (9, 'Núcleo bacteriano', FALSE),
 (9, 'Transcrição do RNA', FALSE),
 
--- alternativa 10
+-- Q10
 (10, 'Transferência de DNA por vírus', FALSE),
 (10, 'Troca de DNA entre duas bactérias por pilus', TRUE),
 (10, 'Divisão binária', FALSE),
 (10, 'Formação de esporos', FALSE),
 (10, 'Fusão total entre duas células', FALSE);
 
--- Questões - reino plantae
+-- questao planate
 INSERT INTO questao (idReino, enunciado) VALUES
 (4, 'As briófitas são plantas que dependem da água para a reprodução porque:'),
 (4, 'As pteridófitas possuem uma característica que as diferencia das briófitas:'),
@@ -96,72 +103,71 @@ INSERT INTO questao (idReino, enunciado) VALUES
 (4, 'As pteridófitas se reproduzem por meio de:'),
 (4, 'A dupla fecundação é uma característica exclusiva de:');
 
--- Inserts - reino plantae
 INSERT INTO alternativa (idQuestao, texto, correta) VALUES
--- alternativa 01
+-- Q11
 (11, 'Produzem gametas flagelados que precisam nadar', TRUE),
 (11, 'Formam frutos carnosos', FALSE),
 (11, 'Não realizam fotossíntese', FALSE),
 (11, 'São plantas vasculares', FALSE),
 (11, 'Possuem sementes expostas', FALSE),
 
--- alternativa 02
+-- Q12
 (12, 'Presença de vasos condutores', TRUE),
 (12, 'Produção de flores', FALSE),
 (12, 'Dependência total da água', FALSE),
 (12, 'Ausência de raízes', FALSE),
 (12, 'Presença de frutos', FALSE),
 
--- alternativao 03
+-- Q13
 (13, 'Ficarem expostas, sem frutos', TRUE),
 (13, 'Serem envolvidas por frutos', FALSE),
 (13, 'Germinarem apenas em água doce', FALSE),
 (13, 'Formarem flores vistosas', FALSE),
 (13, 'Serem sempre carnosas', FALSE),
 
--- alternativa 4
+-- Q14
 (14, 'A presença de flores e frutos', TRUE),
 (14, 'A ausência de sementes', FALSE),
 (14, 'A formação de esporos', FALSE),
 (14, 'A falta de vasos condutores', FALSE),
 (14, 'A reprodução exclusivamente assexuada', FALSE),
 
--- alternativa 5
+-- Q15
 (15, 'Samambaia', TRUE),
 (15, 'Musgo', FALSE),
 (15, 'Orquídea', FALSE),
 (15, 'Pinheiro', FALSE),
 (15, 'Cacto', FALSE),
 
--- alternativa 6
+-- Q16
 (16, 'Gametófito', TRUE),
 (16, 'Esporófito', FALSE),
 (16, 'Semente', FALSE),
 (16, 'Flor', FALSE),
 (16, 'Fruto', FALSE),
 
--- alternativa 7
+-- Q17
 (17, 'Proteger as sementes e auxiliar na dispersão', TRUE),
 (17, 'Realizar fotossíntese', FALSE),
 (17, 'Controlar a perda de água', FALSE),
 (17, 'Produzir esporos', FALSE),
 (17, 'Atrair polinizadores', FALSE),
 
--- alternativa 8
+-- Q18
 (18, 'Gimnospermas', TRUE),
 (18, 'Briófitas', FALSE),
 (18, 'Pteridófitas', FALSE),
 (18, 'Algas verdes', FALSE),
 (18, 'Angiospermas', FALSE),
 
--- alternativa 9
+-- Q19
 (19, 'Esporos', TRUE),
 (19, 'Flores', FALSE),
 (19, 'Frutos', FALSE),
 (19, 'Sementes', FALSE),
 (19, 'Raízes secundárias', FALSE),
 
--- alternativa 10
+-- Q20
 (20, 'Angiospermas', TRUE),
 (20, 'Gimnospermas', FALSE),
 (20, 'Pteridófitas', FALSE),
@@ -270,7 +276,7 @@ INSERT INTO questao (idReino, enunciado) VALUES
 
 -- alternativas-reino animalia
 INSERT INTO alternativa (idQuestao, texto, correta) VALUES
--- Questão 31
+-- alternativa 1
 (31, 'Corpo com poros e filtradores', TRUE),
 (31, 'Presença de mandíbulas', FALSE),
 (31, 'Possuírem notocorda', FALSE),
@@ -339,6 +345,8 @@ INSERT INTO alternativa (idQuestao, texto, correta) VALUES
 (40, 'Respiração cutânea', FALSE),
 (40, 'Fecundação externa', FALSE),
 (40, 'Ausência de esqueleto', FALSE);
+
+
 
 
 

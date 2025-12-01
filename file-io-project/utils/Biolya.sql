@@ -25,22 +25,6 @@ CREATE TABLE IF NOT EXISTS reino (
     descricao TEXT
 );
 
-CREATE TABLE IF NOT EXISTS filo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    idReino INT NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    descricao TEXT,
-    FOREIGN KEY (idReino) REFERENCES reino(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS organismo (
-    id_organismo INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    descricao TEXT,
-    id_classe INT NOT NULL,
-    FOREIGN KEY (id_classe) REFERENCES classe(id_classe) ON DELETE CASCADE
-);
-
 
 CREATE TABLE IF NOT EXISTS questao (
     id INT AUTO_INCREMENT PRIMARY KEY,
