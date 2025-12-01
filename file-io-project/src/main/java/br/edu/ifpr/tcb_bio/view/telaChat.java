@@ -293,78 +293,87 @@ public class telaChat {
     }
 
     //-------------------------------listar-------------------//
-    private static void  mostrarTelaListagem(){
+    private static void mostrarTelaListagem() {
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.setLayout(null);
         janela.getContentPane().setBackground(Color.WHITE);
-
+    
         JLabel titulo = new JLabel("Questões Cadastradas", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 22));
         titulo.setBounds(200, 40, 600, 40);
         janela.add(titulo);
-
-        ArrayList<Questao> lista = questaoController.listar(); // mostra a lista de questoes cadsttradas 
-
-        int y = 210;
-
-        if(lista.isEmpty()){
+    
+        ArrayList<Questao> lista = questaoController.listar();
+    
+        // Painel que vai armazenar a lista
+        JPanel painelLista = new JPanel();
+        painelLista.setLayout(null);
+        painelLista.setPreferredSize(new Dimension(900, lista.size() * 60 + 100)); // altura automática
+        painelLista.setBackground(Color.WHITE);
+    
+        int y = 20;
+    
+        if (lista.isEmpty()) {
             JLabel lbl = new JLabel("Não tem nenhuma questão cadastrada!", SwingConstants.CENTER);
             lbl.setFont(new Font("Arial", Font.BOLD, 18));
             lbl.setBounds(200, 200, 600, 40);
             janela.add(lbl);
-        
-            // botão voltar, senão o usuário fica preso
+    
             JButton voltar = new JButton("Voltar");
             voltar.setBounds(350, 260, 300, 40);
             voltar.addActionListener(e -> mostrarTelaGerenciarQuestoes());
             janela.add(voltar);
-        
+    
             janela.revalidate();
             janela.repaint();
-            return; // <-- IMPORTANTE para parar a função
+            return;
         }
-        for (Questao q : lista) {// vai percorrer por toda a minha lista de questoes 
-            JLabel lbl = new JLabel("ID: " + q.getId() + " - " + q.getEnunciado()); // cria um 'texto' que vai mostrar o id e o enunciado da questao
-            lbl.setBounds(100, y, 800, 30);//vai posicionar, o y ele foi usado para que a cada questao que for listada ela apareça y pra baixo da anterior
-            //isso evita que todas as quesptesapareçam uma em cima da outra
-            janela.add(lbl);//adiciona a trla
-
-            //-----------------------------Botão editar------------------------------//
+    
+        for (Questao q : lista) {
+            JLabel lbl = new JLabel("ID: " + q.getId() + " - " + q.getEnunciado());
+            lbl.setBounds(30, y, 800, 30);
+            painelLista.add(lbl);
+    
+            JButton alternativas = new JButton("Alternativas");
+            alternativas.setBounds(480, y, 120, 25);
+            alternativas.addActionListener(e -> listarPorQuestao.(q));
+            painelLista.add(alternativas);
+    
             JButton editar = new JButton("Editar");
-            editar.setBounds(650, y, 100, 25); // o y tem a msm função da linha 288
-            editar.addActionListener(e -> editarQuestao(q)); // vai chamar a tela de editar quesotes e passar q questao específica
-            janela.add(editar); // adiciona o botão
-
-            //-----------------------------Botão excluir ----------------------------//
+            editar.setBounds(610, y, 100, 25);
+            editar.addActionListener(e -> editarQuestao(q));
+            painelLista.add(editar);
+    
             JButton excluir = new JButton("Excluir");
-            excluir.setBounds(760, y, 100, 25);// y tem a msm função da linha 288
+            excluir.setBounds(720, y, 100, 25);
             excluir.addActionListener(e -> {
                 int confirm = JOptionPane.showConfirmDialog(janela,
                         "Deseja realmente excluir a questão com ID : " + q.getId() + "?",
                         "Confirmar exclusão",
-                        JOptionPane.YES_NO_OPTION); // aqui vai aparecer uma caixinha que vai perguntar ao admin se ele REALMENTE quer deletar permanentemente aquela pergunta
+                        JOptionPane.YES_NO_OPTION);
+    
                 if (confirm == JOptionPane.YES_OPTION) {
-                    questaoController.deletar(q.getId()); // se ele apertar q sim vai deletá-la permanentemente do database
-                    mostrarTelaGerenciarQuestoes();// volta para a tela de gerenciamento de questoes
+                    questaoController.deletar(q.getId());
+                    mostrarTelaListagem();
                 }
             });
-            janela.add(excluir);
-
-            //----------------------------Botão alternativa -----------------------//
-            JButton gerenciarAlt = new JButton("Alternativas");
-            gerenciarAlt.setBounds(530, y, 110, 25);// y com a mesma função da linha 288
-            gerenciarAlt.addActionListener(e -> mostrarTelaGerenciarAlternativas(q));// vai encaminhar à tela de gerenciar alternativas, ja passando a questao q foi escolinha
-            janela.add(gerenciarAlt); // adiciona à tela
-
-            y += 40;// aqui vai almentar o y, pra que a prox. questao apareça mais abaixo
+            painelLista.add(excluir);
+    
+            y += 60;
         }
-
-
-
-
-
+    
+        // CRIA A BARRA DE ROLAGEM
+        JScrollPane scroll = new JScrollPane(painelLista);
+        scroll.setBounds(50, 120, 900, 450);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    
+        janela.add(scroll);
+    
+        janela.revalidate();
+        janela.repaint();
     }
+    
 
     // ------------------ Adicionar Questão (Admin) ------------------
     private static void mostrarTelaAdicionarQuestao() {
@@ -759,7 +768,10 @@ public class telaChat {
         janela.getContentPane().setBackground(Color.WHITE);
 
         JLabel titulo = new JLabel("Escolha um Reino", SwingConstants.CENTER);// cabeçalho da tela
-        titulo.setBounds(200, 40, 600, 100);
+        Font novaFonte = new Font("Arial", Font.BOLD, 25);
+        titulo.setFont(novaFonte);
+        titulo.setBounds(200, 40, 600, 40);
+        
         janela.add(titulo);
 
         ArrayList<Reino> reinos; // lista todos os reinos
@@ -769,10 +781,10 @@ public class telaChat {
             reinos = criarReinosExemplo();// serve como plano b
         }
 
-        int y = 70;
+        int y = 100;
         for (Reino reino : reinos) {
             JButton botao = new JButton(reino.getNomeReino());// pra cada reino tem um botao clicavel
-            botao.setBounds(150, y, 200, 30);
+            botao.setBounds(400, y, 200, 30);
             botao.addActionListener(e -> mostrarTelaQuestoes(reino));//mostra a tela de questoes
             janela.add(botao);//adicionar os botões
             y += 40; // para q os prox. fiquem um em baixo do outro
@@ -780,12 +792,12 @@ public class telaChat {
 
 
         JButton botaoRanking = new JButton("Ranking");
-        botaoRanking.setBounds(490, y + 60, 100, 30);
+        botaoRanking.setBounds(400, y + 60, 100, 30);
         botaoRanking.addActionListener(e -> mostrarTelaRanking(usuario));
         janela.add(botaoRanking);
 
         JButton botaoPerfil = new JButton("Perfil"); // botao clicavel de perfil
-        botaoPerfil.setBounds(410, y + 60, 100, 30);
+        botaoPerfil.setBounds(500, y + 60, 100, 30);
         botaoPerfil.addActionListener(e -> mostrarTelaPerfil(usuario));// mostra a tela de perfil
         janela.add(botaoPerfil);// add na tela
 
@@ -795,6 +807,7 @@ public class telaChat {
     }
 
     //------------------------------tela de questoes------------------------------------//
+    //formatado certo
 
       // método principal que inicia a sequência de questões
     private static void mostrarTelaQuestoes(Reino reino) {
@@ -828,14 +841,14 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
 
     // cria um campo de texto para colocar o enunciado da questao
     JLabel titulo = new JLabel(q.getEnunciado(), SwingConstants.CENTER);// mostra a questão
-    titulo.setBounds(100, 50, 300, 30);// seta a posicao que vai aparecer
+    titulo.setBounds(100, 250, 800, 30);// seta a posicao que vai aparecer
     janela.add(titulo);
 
     // cria botões para cada alternativa
-    int y = 120; // posição vertical inicial
+    int y = 300; // posição vertical inicial
     for (Alternativa alt : alternativas) { // usamos para aparecer todas as alternativas na tela 
         JButton botao = new JButton(alt.getTexto()); // cria um botao clicavel para todas as alternativas 
-        botao.setBounds(150, y, 600, 30);//seta os botoes 
+        botao.setBounds(100, y, 800, 30);//seta os botoes 
 
         // Ação quando o usuário clica na alternativa
         botao.addActionListener(e -> {
@@ -874,7 +887,8 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
 }
 
 
-    // ------------------ Tela Perfil ------------------
+    // ------------------ Tela Perfil ------------------//
+    // esse ta formato certo
     private static void mostrarTelaPerfil(Perfil usu) {// passei o usuario pq antes estvaa dando erro no usuario que estava sendo conytabilizado os acertos
         janela.getContentPane().removeAll();
         janela.repaint();
@@ -885,16 +899,22 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
                 ? usu.getCadastro().getNomeUsuario() : "Usuário";
 
         JLabel titulo = new JLabel("Perfil de " + nomeUsuario, SwingConstants.CENTER); // cabeçalho da tela 
-        titulo.setBounds(100, 50, 300, 30);
+        Font fonte=  new Font("Arial", Font.BOLD, 25);
+        titulo.setFont(fonte);
+        titulo.setBounds(350, 50, 300, 30);
+
         janela.add(titulo);//add o cabeçalho
 
         int acertos = (usu != null) ? usu.getTotalAcertos() : 0; // pega os acertos do perfil passado se for nulo (nunca vai ser o caso) vai assumir como 0 acertos
         JLabel labelAcertos = new JLabel("Acertos: " + acertos, SwingConstants.CENTER); //aparece na tela o total de acertos 
-        labelAcertos.setBounds(100, 100, 300, 30);
+       
+        Font fonte2=  new Font("Arial", Font.BOLD, 25);
+        titulo.setFont(fonte2);
+        labelAcertos.setBounds(350, 100, 300, 30);
         janela.add(labelAcertos);//add na tela 
 
         JButton botaoVoltar = new JButton("Voltar");//botao clicável
-        botaoVoltar.setBounds(200, 150, 100, 30);
+        botaoVoltar.setBounds(450, 150, 100, 30);
         botaoVoltar.addActionListener(e -> mostrarTelaReinos(usu));//vai voltar para a tela de reinos
         janela.add(botaoVoltar);
 
@@ -903,7 +923,8 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
     }
 
     //---------------------------------tela Ranking ---------------------------------//
-//---------------------------------tela Ranking ---------------------------------//
+    // precisa arrumar
+
 private static void mostrarTelaRanking(Perfil usuario) {
     // limpa a tela e prepara pra mostrar o ranking
     janela.getContentPane().removeAll();
@@ -929,7 +950,7 @@ private static void mostrarTelaRanking(Perfil usuario) {
     int y = 120; // posicao vertical inicial pra listar os usuarios
     // cria o cabecalho da tabela de ranking
     JLabel cabecalho = new JLabel("Posicao | Nome | Total de Acertos");
-    cabecalho.setBounds(100, y - 30, 600, 25); // coloca cabecalho acima da primeira linha
+    cabecalho.setBounds(400, y - 30, 600, 25); // coloca cabecalho acima da primeira linha
     janela.add(cabecalho);
 
     int posicao = 1; // inicializa a posicao no ranking
@@ -937,7 +958,7 @@ private static void mostrarTelaRanking(Perfil usuario) {
     for (Perfil p : perfis) {
         String nome = (p.getCadastro() != null) ? p.getCadastro().getNomePessoa() : "Anonimo"; // verifica se tem nome cadastrado
         JLabel lbl = new JLabel(posicao + " | " + nome + " | " + p.getTotalAcertos()); // monta linha com posicao, nome e acertos
-        lbl.setBounds(100, y, 600, 25); // define posicao da linha
+        lbl.setBounds(400, y, 600, 25); // define posicao da linha
         janela.add(lbl); // adiciona na tela
         y += 30; // aumenta posicao vertical pra proxima linha
         posicao++; // incrementa posicao do ranking
