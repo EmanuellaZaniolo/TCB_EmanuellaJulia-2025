@@ -228,28 +228,28 @@ public class telaChat {
 
         JLabel titulo = new JLabel("Painel do Administrador", SwingConstants.CENTER);// vai aparec er um cabeçalho no topo da tela\ 
         titulo.setFont(new Font("Arial", Font.BOLD, 26));
-        titulo.setBounds(200, 40, 600, 50);
+        titulo.setBounds(200, 100, 600, 50);
         janela.add(titulo);// adiciona o cabeçlho na tela 
 
         JButton botaoQuestoes = new JButton("Gerenciar Questões"); // botao clicável 
-        botaoQuestoes.setBounds(350, 150, 300, 40);
+        botaoQuestoes.setBounds(350, 210, 300, 40);
         botaoQuestoes.addActionListener(e -> mostrarTelaGerenciarQuestoes());// se clicar aparece essa tela 
         janela.add(botaoQuestoes);// add o botão à tela 
 
         JButton botaoAdicionarQuestao = new JButton("Adicionar Questão");//botao clicavel
-        botaoAdicionarQuestao.setBounds(350, 220, 300, 40);
+        botaoAdicionarQuestao.setBounds(350, 310, 300, 40);
         botaoAdicionarQuestao.addActionListener(e -> mostrarTelaAdicionarQuestao());// se clicar aparece essa tela 
         janela.add(botaoAdicionarQuestao);// add o botão à tela 
 
 
         JButton botaoUsuarios = new JButton("Ver Usuários");//botao clicavel
-        botaoUsuarios.setBounds(350, 290, 300, 40);
+        botaoUsuarios.setBounds(350, 410, 300, 40);
         botaoUsuarios.addActionListener(e -> mostrarUsuarios());
         janela.add(botaoUsuarios);// add o botão à tela 
 
 
         JButton botaoVoltar = new JButton("Sair");//botao clicavel
-        botaoVoltar.setBounds(350, 360, 300, 40);
+        botaoVoltar.setBounds(350, 510, 300, 40);
         botaoVoltar.addActionListener(e -> criarTelaInicial());// se clicar aparece essa tela 
         janela.add(botaoVoltar);// add o botão à tela 
 
@@ -267,19 +267,63 @@ public class telaChat {
 
         JLabel titulo = new JLabel("Questões cadastradas", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        titulo.setBounds(200, 100, 600, 40);
+        janela.add(titulo);
+
+      
+
+        //--------------------------------Botão global de adicionar questões ------------------------------------//
+        JButton botaoAdicionarQuestao = new JButton("Adicionar Questão");
+        botaoAdicionarQuestao.setBounds(350, 210, 300, 40);
+        botaoAdicionarQuestao.addActionListener(e -> mostrarTelaAdicionarQuestao());
+        janela.add(botaoAdicionarQuestao);
+
+        JButton botaoListar= new JButton("Listar Questões");
+        botaoListar.setBounds(350, 300, 300, 40);
+        botaoListar.addActionListener(e -> mostrarTelaListagem());
+        janela.add(botaoListar);
+
+        JButton voltar = new JButton("Voltar"); 
+        voltar.setBounds(350,390, 300, 40);
+        voltar.addActionListener(e -> mostrarTelaAdmin()); // vai voltar para o "menu" do admin 
+        janela.add(voltar);//adiciona à tela
+
+        janela.revalidate();
+        janela.repaint();
+    }
+
+    //-------------------------------listar-------------------//
+    private static void  mostrarTelaListagem(){
+        janela.getContentPane().removeAll();
+        janela.repaint();
+        janela.setLayout(null);
+        janela.getContentPane().setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("Questões Cadastradas", SwingConstants.CENTER);
+        titulo.setFont(new Font("Arial", Font.BOLD, 22));
         titulo.setBounds(200, 40, 600, 40);
         janela.add(titulo);
 
         ArrayList<Questao> lista = questaoController.listar(); // mostra a lista de questoes cadsttradas 
 
-        int y = 120;
+        int y = 210;
 
-        //--------------------------------Botão global de adicionar questões ------------------------------------//
-        JButton botaoAdicionarQuestao = new JButton("Adicionar Questão");
-        botaoAdicionarQuestao.setBounds(350, 100, 300, 40);
-        botaoAdicionarQuestao.addActionListener(e -> mostrarTelaAdicionarQuestao());
-        janela.add(botaoAdicionarQuestao);
-
+        if(lista.isEmpty()){
+            JLabel lbl = new JLabel("Não tem nenhuma questão cadastrada!", SwingConstants.CENTER);
+            lbl.setFont(new Font("Arial", Font.BOLD, 18));
+            lbl.setBounds(200, 200, 600, 40);
+            janela.add(lbl);
+        
+            // botão voltar, senão o usuário fica preso
+            JButton voltar = new JButton("Voltar");
+            voltar.setBounds(350, 260, 300, 40);
+            voltar.addActionListener(e -> mostrarTelaGerenciarQuestoes());
+            janela.add(voltar);
+        
+            janela.revalidate();
+            janela.repaint();
+            return; // <-- IMPORTANTE para parar a função
+        }
         for (Questao q : lista) {// vai percorrer por toda a minha lista de questoes 
             JLabel lbl = new JLabel("ID: " + q.getId() + " - " + q.getEnunciado()); // cria um 'texto' que vai mostrar o id e o enunciado da questao
             lbl.setBounds(100, y, 800, 30);//vai posicionar, o y ele foi usado para que a cada questao que for listada ela apareça y pra baixo da anterior
@@ -316,13 +360,10 @@ public class telaChat {
             y += 40;// aqui vai almentar o y, pra que a prox. questao apareça mais abaixo
         }
 
-        JButton voltar = new JButton("Voltar"); 
-        voltar.setBounds(350, y + 40, 300, 40);
-        voltar.addActionListener(e -> mostrarTelaAdmin()); // vai voltar para o "menu" do admin 
-        janela.add(voltar);//adiciona à tela
 
-        janela.revalidate();
-        janela.repaint();
+
+
+
     }
 
     // ------------------ Adicionar Questão (Admin) ------------------
@@ -487,7 +528,7 @@ public class telaChat {
             y += 35;//incrementa para que as demais alternativas sejam colocadas a baixo da anterior
         }
 
-        //----------------------------Adicionar Alternativa--------------------//
+        //----------------------------Adicionar Alternativa(ADMIN)--------------------//
         JLabel labelTexto = new JLabel("Texto:");
         labelTexto.setBounds(100, y + 10, 50, 25);
         JTextField campoTexto = new JTextField(); // lugar one o admin vai digitar a nova alternativa
@@ -531,7 +572,7 @@ public class telaChat {
         janela.repaint();
     }
 
-    // ----------------------------------Editar Alternativas-----------------------//
+    // ----------------------------------Editar Alternativas(ADMIN)-----------------------//
 
     private static void mostrarTelaEditarAlternativa(Questao questao, Alternativa alt) { // a questao que a alternativa pertence
         janela.getContentPane().removeAll();
@@ -573,7 +614,7 @@ public class telaChat {
         janela.revalidate();
         janela.repaint();
     }
-    //--------------------Mostrar usuarios ------------------//
+    //--------------------Mostrar usuarios(ADMIN) ------------------//
     private static void mostrarUsuarios() {
    
     // limpa a tela
@@ -646,7 +687,7 @@ public class telaChat {
 
 }
 
-    // ------------------------------------Editar perfil-----------------------------//
+    // ------------------------------------Editar perfil(ADMIN)-----------------------------//
    private static void mostrarTelaEditarPerfil(Perfil perfil) {
     // limpa a tela
     janela.getContentPane().removeAll();
@@ -718,7 +759,7 @@ public class telaChat {
         janela.getContentPane().setBackground(Color.WHITE);
 
         JLabel titulo = new JLabel("Escolha um Reino", SwingConstants.CENTER);// cabeçalho da tela
-        titulo.setBounds(100, 50, 300, 30);
+        titulo.setBounds(200, 40, 600, 100);
         janela.add(titulo);
 
         ArrayList<Reino> reinos; // lista todos os reinos
@@ -728,7 +769,7 @@ public class telaChat {
             reinos = criarReinosExemplo();// serve como plano b
         }
 
-        int y = 100;
+        int y = 70;
         for (Reino reino : reinos) {
             JButton botao = new JButton(reino.getNomeReino());// pra cada reino tem um botao clicavel
             botao.setBounds(150, y, 200, 30);
@@ -737,15 +778,16 @@ public class telaChat {
             y += 40; // para q os prox. fiquem um em baixo do outro
         }
 
-        JButton botaoPerfil = new JButton("Perfil"); // botao clicavel de perfil
-        botaoPerfil.setBounds(200, y + 20, 100, 30);
-        botaoPerfil.addActionListener(e -> mostrarTelaPerfil(usuario));// mostra a tela de perfil
-        janela.add(botaoPerfil);// add na tela
 
         JButton botaoRanking = new JButton("Ranking");
-        botaoRanking.setBounds(320, y + 60, 100, 30);
+        botaoRanking.setBounds(490, y + 60, 100, 30);
         botaoRanking.addActionListener(e -> mostrarTelaRanking(usuario));
         janela.add(botaoRanking);
+
+        JButton botaoPerfil = new JButton("Perfil"); // botao clicavel de perfil
+        botaoPerfil.setBounds(410, y + 60, 100, 30);
+        botaoPerfil.addActionListener(e -> mostrarTelaPerfil(usuario));// mostra a tela de perfil
+        janela.add(botaoPerfil);// add na tela
 
 
         janela.revalidate();
