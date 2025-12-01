@@ -1,4 +1,4 @@
-Questões - reino monera
+-- Questões - reino monera
 INSERT INTO questao (idReino, enunciado) VALUES
 (1, 'As bactérias são organismos pertencentes ao reino Monera. Qual das alternativas caracteriza CORRETAMENTE esses organismos?'),
 (1, 'O processo de reprodução mais comum entre as bactérias é:'),
@@ -11,79 +11,79 @@ INSERT INTO questao (idReino, enunciado) VALUES
 (1, 'O antibiótico penicilina atua principalmente sobre:'),
 (1, 'O processo de conjugação bacteriana consiste em:');
 
---Inserts das alternativas - reino monera
+-- Inserts das alternativas - reino monera
 INSERT INTO alternativa (idQuestao, texto, correta) VALUES
--- Questão 1
+-- alternativa 1
 (1, 'Serem pluricelulares e eucariontes', FALSE),
 (1, 'Serem unicelulares e procariontes', TRUE),
 (1, 'Possuírem núcleo individualizado', FALSE),
 (1, 'Serem sempre autotróficas', FALSE),
 (1, 'Serem exclusivamente anaeróbias', FALSE),
 
--- Questão 2
+-- alternativa 2
 (2, 'Bipartição (divisão binária)', TRUE),
 (2, 'Brotamento', FALSE),
 (2, 'Fecundação interna', FALSE),
 (2, 'Clivagem embrionária', FALSE),
 (2, 'Esporulação sexuada', FALSE),
 
--- Questão 3
+-- alternativa 3
 (3, 'Fungos', FALSE),
 (3, 'Arqueias', TRUE),
 (3, 'Protistas', FALSE),
 (3, 'Animais primitivos', FALSE),
 (3, 'Briófitas', FALSE),
 
--- Questão 4
+-- alternativa 4
 (4, 'Produzirem toxinas para defesa', FALSE),
 (4, 'Reduzirem a biodiversidade marinha', FALSE),
 (4, 'Realizarem fotossíntese e liberarem oxigênio', TRUE),
 (4, 'Serem parasitas exclusivos', FALSE),
 (4, 'Comerem outros microrganismos', FALSE),
 
--- Questão 5
+-- alternativa 5
 (5, 'Ribossomos', FALSE),
 (5, 'Parede celular', FALSE),
 (5, 'Mitocôndrias', TRUE),
 (5, 'Membrana plasmática', FALSE),
 (5, 'Material genético', FALSE),
 
--- Questão 6
+-- alternativa 6
 (6, 'Perda de flagelos', FALSE),
 (6, 'Capacidade de realizar fotossíntese', FALSE),
 (6, 'Mutação e seleção natural', TRUE),
 (6, 'Aumento do tamanho corporal', FALSE),
 (6, 'Absorção de proteínas do ambiente', FALSE),
 
--- Questão 7
+-- alternativa 7
 (7, 'Ausência completa de parede celular', FALSE),
 (7, 'Possuírem cápsula protetora', FALSE),
 (7, 'Camada espessa de peptidoglicano', TRUE),
 (7, 'Possuírem DNA circular', FALSE),
 (7, 'Serem multicelulares', FALSE),
 
--- Questão 8
+-- alternativa 8
 (8, 'Possuírem núcleo', FALSE),
 (8, 'Viverem apenas em água doce', FALSE),
 (8, 'Diferenças bioquímicas e lipídicas na membrana', TRUE),
 (8, 'Serem exclusivamente parasitas', FALSE),
 (8, 'Fazerem fotossíntese', FALSE),
 
--- Questão 9
+-- alternativa 9
 (9, 'Parede celular de quitina', FALSE),
 (9, 'Síntese de proteínas', FALSE),
 (9, 'Parede celular de peptidoglicano', TRUE),
 (9, 'Núcleo bacteriano', FALSE),
 (9, 'Transcrição do RNA', FALSE),
 
--- Questão 10
+-- alternativa 10
 (10, 'Transferência de DNA por vírus', FALSE),
 (10, 'Troca de DNA entre duas bactérias por pilus', TRUE),
 (10, 'Divisão binária', FALSE),
 (10, 'Formação de esporos', FALSE),
 (10, 'Fusão total entre duas células', FALSE);
 
---Questões - reino plantae
+-- Questões - reino plantae
 INSERT INTO questao (idReino, enunciado) VALUES
 (4, 'As briófitas são plantas que dependem da água para a reprodução porque:'),
 (4, 'As pteridófitas possuem uma característica que as diferencia das briófitas:'),
@@ -96,79 +96,79 @@ INSERT INTO questao (idReino, enunciado) VALUES
 (4, 'As pteridófitas se reproduzem por meio de:'),
 (4, 'A dupla fecundação é uma característica exclusiva de:');
 
---Inserts - reino plantae
+-- Inserts - reino plantae
 INSERT INTO alternativa (idQuestao, texto, correta) VALUES
--- Questão 11
+-- alternativa 01
 (11, 'Produzem gametas flagelados que precisam nadar', TRUE),
 (11, 'Formam frutos carnosos', FALSE),
 (11, 'Não realizam fotossíntese', FALSE),
 (11, 'São plantas vasculares', FALSE),
 (11, 'Possuem sementes expostas', FALSE),
 
--- Questão 12
+-- alternativa 02
 (12, 'Presença de vasos condutores', TRUE),
 (12, 'Produção de flores', FALSE),
 (12, 'Dependência total da água', FALSE),
 (12, 'Ausência de raízes', FALSE),
 (12, 'Presença de frutos', FALSE),
 
--- Questão 13
+-- alternativao 03
 (13, 'Ficarem expostas, sem frutos', TRUE),
 (13, 'Serem envolvidas por frutos', FALSE),
 (13, 'Germinarem apenas em água doce', FALSE),
 (13, 'Formarem flores vistosas', FALSE),
 (13, 'Serem sempre carnosas', FALSE),
 
--- Questão 14
+-- alternativa 4
 (14, 'A presença de flores e frutos', TRUE),
 (14, 'A ausência de sementes', FALSE),
 (14, 'A formação de esporos', FALSE),
 (14, 'A falta de vasos condutores', FALSE),
 (14, 'A reprodução exclusivamente assexuada', FALSE),
 
--- Questão 15
+-- alternativa 5
 (15, 'Samambaia', TRUE),
 (15, 'Musgo', FALSE),
 (15, 'Orquídea', FALSE),
 (15, 'Pinheiro', FALSE),
 (15, 'Cacto', FALSE),
 
--- Questão 16
+-- alternativa 6
 (16, 'Gametófito', TRUE),
 (16, 'Esporófito', FALSE),
 (16, 'Semente', FALSE),
 (16, 'Flor', FALSE),
 (16, 'Fruto', FALSE),
 
--- Questão 17
+-- alternativa 7
 (17, 'Proteger as sementes e auxiliar na dispersão', TRUE),
 (17, 'Realizar fotossíntese', FALSE),
 (17, 'Controlar a perda de água', FALSE),
 (17, 'Produzir esporos', FALSE),
 (17, 'Atrair polinizadores', FALSE),
 
--- Questão 18
+-- alternativa 8
 (18, 'Gimnospermas', TRUE),
 (18, 'Briófitas', FALSE),
 (18, 'Pteridófitas', FALSE),
 (18, 'Algas verdes', FALSE),
 (18, 'Angiospermas', FALSE),
 
--- Questão 19
+-- alternativa 9
 (19, 'Esporos', TRUE),
 (19, 'Flores', FALSE),
 (19, 'Frutos', FALSE),
 (19, 'Sementes', FALSE),
 (19, 'Raízes secundárias', FALSE),
 
--- Questão 20
+-- alternativa 10
 (20, 'Angiospermas', TRUE),
 (20, 'Gimnospermas', FALSE),
 (20, 'Pteridófitas', FALSE),
 (20, 'Briófitas', FALSE),
 (20, 'Coníferas', FALSE);
 
---Questões - reino protista
+-- Questões - reino protista
 INSERT INTO questao (idReino, enunciado) VALUES
 (2, 'O grupo dos protistas é formado principalmente por:'),
 (2, 'A alga euglenoide *Euglena* é interessante porque:'),
@@ -181,72 +181,72 @@ INSERT INTO questao (idReino, enunciado) VALUES
 (2, 'O vacúolo contrátil em protistas tem a função de:'),
 (2, 'As algas pardas pertencem principalmente ao grupo das:');
 
---Inserts - reino protista
+-- Aleternativas - reino protista
 INSERT INTO alternativa (idQuestao, texto, correta) VALUES
--- Questão 21
+-- alternativa 1
 (21, 'Protozoários e algas', TRUE),
 (21, 'Fungos e plantas', FALSE),
 (21, 'Bactérias e arqueias', FALSE),
 (21, 'Animais e vírus', FALSE),
 (21, 'Insetos e algas', FALSE),
 
--- Questão 22
+-- alternativa 2
 (22, 'Pode realizar fotossíntese e heterotrofia', TRUE),
 (22, 'É a maior planta do mundo', FALSE),
 (22, 'É um fungo unicelular', FALSE),
 (22, 'É um inseto aquático', FALSE),
 (22, 'Vive apenas no solo', FALSE),
 
--- Questão 23
+-- alternativa 3
 (23, 'Organismos unicelulares e heterotróficos', TRUE),
 (23, 'Plantas multicelulares', FALSE),
 (23, 'Fungos decompositores', FALSE),
 (23, 'Bactérias patogênicas', FALSE),
 (23, 'Animais pluricelulares', FALSE),
 
--- Questão 24
+-- alternativa 4
 (24, 'Mosquito *Anopheles*', TRUE),
 (24, 'Carrapato estrela', FALSE),
 (24, 'Pulga doméstica', FALSE),
 (24, 'Piolho humano', FALSE),
 (24, 'Mosca varejeira', FALSE),
 
--- Questão 25
+-- alternativa 5
 (25, 'Produzem grande parte do oxigênio do planeta', TRUE),
 (25, 'São parasitas obrigatórios', FALSE),
 (25, 'Vivem apenas em água doce', FALSE),
 (25, 'Não realizam fotossíntese', FALSE),
 (25, 'Causam apenas doenças', FALSE),
 
--- Questão 26
+-- alternativa 6
 (26, 'Cílios', TRUE),
 (26, 'Flagelos', FALSE),
 (26, 'Pseudópodes', FALSE),
 (26, 'Filamentos', FALSE),
 (26, 'Esporos', FALSE),
 
--- Questão 27
+-- alternativa 7
 (27, 'Pseudópodes', TRUE),
 (27, 'Cílios', FALSE),
 (27, 'Espinhos rígidos', FALSE),
 (27, 'Membranas ondulantes', FALSE),
 (27, 'Tentáculos musculares', FALSE),
 
--- Questão 28
+-- alternativa 8
 (28, 'Dinoflagelados', TRUE),
 (28, 'Briófitas', FALSE),
 (28, 'Bactérias', FALSE),
 (28, 'Cianobactérias', FALSE),
 (28, 'Algas vermelhas', FALSE),
 
--- Questão 29
+-- alternativa 9
 (29, 'Regular a entrada e saída de água', TRUE),
 (29, 'Produzir alimento', FALSE),
 (29, 'Defender contra predadores', FALSE),
 (29, 'Aumentar a reprodução', FALSE),
 (29, 'Armazenar DNA', FALSE),
 
--- Questão 30
+-- alternativa 10
 (30, 'Feófitas', TRUE),
 (30, 'Rodófitas', FALSE),
 (30, 'Clorófitas', FALSE),
@@ -255,7 +255,7 @@ INSERT INTO alternativa (idQuestao, texto, correta) VALUES
 
 
 
---Questões - reino animalia
+-- Questões - reino animalia
 INSERT INTO questao (idReino, enunciado) VALUES
 (5, 'Os poríferos se caracterizam principalmente por:'),
 (5, 'Os cnidários possuem células urticantes chamadas de:'),
@@ -268,7 +268,7 @@ INSERT INTO questao (idReino, enunciado) VALUES
 (5, 'Os mamíferos possuem como característica exclusiva:'),
 (5, 'As aves são animais caracterizados por:');
 
---Inserts-reino animalia
+-- alternativas-reino animalia
 INSERT INTO alternativa (idQuestao, texto, correta) VALUES
 -- Questão 31
 (31, 'Corpo com poros e filtradores', TRUE),
@@ -277,63 +277,63 @@ INSERT INTO alternativa (idQuestao, texto, correta) VALUES
 (31, 'Respirarem por pulmões', FALSE),
 (31, 'Revestimento de escamas', FALSE),
 
--- Questão 32
+-- alternativa 2
 (32, 'Nematocistos', TRUE),
 (32, 'Cistos germinativos', FALSE),
 (32, 'Cloroplastos', FALSE),
 (32, 'Cnidomas', FALSE),
 (32, 'Filópodes', FALSE),
 
--- Questão 33
+-- alternativa 3
 (33, 'Tênias e planárias', TRUE),
 (33, 'Minhocas e sanguessugas', FALSE),
 (33, 'Bactérias intestinais', FALSE),
 (33, 'Corais e medusas', FALSE),
 (33, 'Caracóis e lulas', FALSE),
 
--- Questão 34
+-- alternativa 4
 (34, 'Metameria (corpo segmentado)', TRUE),
 (34, 'Presença de brânquias externas', FALSE),
 (34, 'Corpo totalmente rígido', FALSE),
 (34, 'Reprodução exclusivamente assexuada', FALSE),
 (34, 'Ausência de sistema circulatório', FALSE),
 
--- Questão 35
+-- alternativa 5
 (35, 'Gastrópodes, bivalves e cefalópodes', TRUE),
 (35, 'Aracnídeos, insetos e crustáceos', FALSE),
 (35, 'Moluscos, peixes e anfíbios', FALSE),
 (35, 'Equinodermos e tunicados', FALSE),
 (35, 'Cnidários e poríferos', FALSE),
 
--- Questão 36
+-- alternativa 6
 (36, 'Exoesqueleto quitinoso', TRUE),
 (36, 'Coluna vertebral', FALSE),
 (36, 'Simetria pentarradial', FALSE),
 (36, 'Fecundação interna obrigatória', FALSE),
 (36, 'Presença de brânquias internas', FALSE),
 
--- Questão 37
+-- alternativa 7
 (37, 'Pentarradial', TRUE),
 (37, 'Bilateral', FALSE),
 (37, 'Assimétrica', FALSE),
 (37, 'Trirradiada', FALSE),
 (37, 'Hexarradial', FALSE),
 
--- Questão 38
+-- alternativa 8
 (38, 'Osteíctes', TRUE),
 (38, 'Condrictes', FALSE),
 (38, 'Mamíferos aquáticos', FALSE),
 (38, 'Cefalópodes', FALSE),
 (38, 'Crustáceos', FALSE),
 
--- Questão 39
+-- alternativa 9
 (39, 'Glândulas mamárias', TRUE),
 (39, 'Respiração branquial', FALSE),
 (39, 'Corpo dividido em tagmas', FALSE),
 (39, 'Simetria radial', FALSE),
 (39, 'Pele impermeável com placas', FALSE),
 
--- Questão 40
+-- alternativa 10
 (40, 'Presença de penas', TRUE),
 (40, 'Corpo com escamas', FALSE),
 (40, 'Respiração cutânea', FALSE),
