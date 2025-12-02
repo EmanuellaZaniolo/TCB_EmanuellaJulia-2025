@@ -1,10 +1,9 @@
 INSERT INTO reino (id, nome, descricao) VALUES
-(1, 'Monera', 'slamonera'),
-(2, 'Protista', 'slaprotista'),
-(3, 'Fungi', 'slafungi'),
-(4, 'Plantae', 'slaplantae'),
-(5, 'Animalia', 'slaanimalia');
-
+(1, 'Monera', 'O Reino Monera é um dos reinos dos seres vivos, caracterizado por organismos procariontes, unicelulares, autótrofos ou heterótrofos.'),
+(2, 'Protista', 'Reino Protista é um dos reinos dos seres vivos, caracterizado por organismos eucariontes, autótrofos ou heterótrofos e unicelulares ou pluricelulares.'),
+(3, 'Fungi', 'O Reino Fungi é representado por organismos eucariontes unicelulares ou pluricelulares, sendo encontrados nos mais diversos tipos de ambientes.'),
+(4, 'Plantae', 'Reino Plantae, é caracterizado por organismos autótrofos (produzem seu próprio alimento) e clorofilados.'),
+(5, 'Animalia', 'O Reino Animal é composto por organismos heterótrofos, ou seja, aqueles que não produzem o próprio alimento.');
 -- questao monera
 INSERT INTO questao (idReino, enunciado) VALUES
 (1, 'As bactérias são organismos pertencentes ao reino Monera. Qual das alternativas caracteriza CORRETAMENTE esses organismos?'),
