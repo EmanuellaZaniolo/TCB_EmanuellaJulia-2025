@@ -1,11 +1,14 @@
 package br.edu.ifpr.tcb_bio.controller;
 
 import br.edu.ifpr.tcb_bio.modelo.Cadastro;
+import br.edu.ifpr.tcb_bio.modelo.Perfil;
 import br.edu.ifpr.tcb_bio.modelo.dao.CadastroDAO;
+import br.edu.ifpr.tcb_bio.modelo.dao.PerfilDAO;
 
 public class CadastroController {
 
     private CadastroDAO cadastroDAO = new CadastroDAO();
+    private PerfilDAO perfilDAO = new PerfilDAO();
 
     // metodo para cadastrar um novo usuario
     public String cadastrar(Cadastro c) {
@@ -14,34 +17,45 @@ public class CadastroController {
             if (c.getNomePessoa() == null || c.getNomePessoa().isEmpty() ||
                 c.getNomeUsuario() == null || c.getNomeUsuario().isEmpty() ||
                 c.getSenha() == null || c.getSenha().isEmpty()) {
-                return "preencha todos os campos!";  // retorna mensagem de erro se algum campo estiver vazio
+                return "preencha todos os campos!";
             }
 
             // verifica se o usuario ja existe
             Cadastro existente = cadastroDAO.buscarPorUsuario(c.getNomeUsuario());
-            if (existente != null) return "usuario ja existente!";  // retorna mensagem de erro se o usuario ja estiver cadastrado
+            if (existente != null) return "usuario ja existente!";
 
-            // tenta inserir o novo cadastro no banco
+            // insere o cadastro
             int idGerado = cadastroDAO.inserir(c);
-            if (idGerado > 0) return "cadastro realizado com sucesso!";  // sucesso no cadastro
-            else return "erro ao cadastrar";  // falha no cadastro
+
+            if (idGerado > 0) {
+
+                // ----------------- CRIA PERFIL AUTOMATICAMENTE -----------------
+                Perfil p = new Perfil();
+                p.setTotalAcertos(0);   // valor inicial
+
+                // vincula o perfil ao cadastro criado
+                perfilDAO.inserir(p, idGerado);
+
+                return "cadastro realizado com sucesso!";
+            } 
+            else return "erro ao cadastrar";
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "erro ao cadastrar: " + e.getMessage();  // caso ocorra algum erro, retorna a mensagem de erro
+            return "erro ao cadastrar: " + e.getMessage();
         }
     }
 
     // metodo para fazer login
     public Cadastro login(String usuario, String senha) {
         try {
-            // tenta buscar o cadastro com o nome de usuario fornecido
             Cadastro c = cadastroDAO.buscarPorUsuario(usuario);
-            if (c == null) return null;  // se nao encontrar o usuario, retorna null
-            if (!c.getSenha().equals(senha)) return null;  // se a senha nao for correta, retorna null
-            return c;  // se login for bem-sucedido, retorna o objeto Cadastro do usuario
+            if (c == null) return null;
+            if (!c.getSenha().equals(senha)) return null;
+            return c;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;  // caso ocorra algum erro, retorna null
+            return null;
         }
     }
 }

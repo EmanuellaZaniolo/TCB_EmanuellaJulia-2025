@@ -1,6 +1,7 @@
 package br.edu.ifpr.tcb_bio.modelo.dao;
 
 import br.edu.ifpr.tcb_bio.modelo.Perfil;
+import br.edu.ifpr.tcb_bio.modelo.Cadastro;
 import br.edu.ifpr.tcb_bio.modelo.ConnectionFactory;
 
 import java.sql.*;
@@ -64,26 +65,39 @@ public class PerfilDAO {
         }
     }
 
-    // metodo para listar todos os perfis do banco de dados
-    public ArrayList<Perfil> listar() throws Exception {
-        ArrayList<Perfil> lista = new ArrayList<>();  // cria uma lista para armazenar os perfis
-        String sql = "select * from perfil";
-        try (Connection con = ConnectionFactory.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {  // executa a consulta e obtém os resultados
-            while (rs.next()) {  // para cada perfil encontrado
-                Perfil p = new Perfil();  // cria um novo objeto perfil
-                if (columnExists(rs, "id")) {  // verifica se a coluna "id" existe no resultado
-                    try { 
-                        p.setId(rs.getInt("id"));  // seta o id no perfil
-                    } catch (SQLException ignored) {}
-                }
-                p.setTotalAcertos(rs.getInt("totalAcertos"));  // seta o total de acertos no perfil
-                lista.add(p);  // adiciona o perfil à lista
-            }
+   public ArrayList<Perfil> listar() throws Exception {
+    ArrayList<Perfil> lista = new ArrayList<>();
+
+    String sql = """
+        SELECT p.id, p.totalAcertos,
+               c.id AS cadastro_id, 
+               c.nomePessoa
+        FROM perfil p
+        JOIN cadastro c ON p.idCadastro = c.id
+    """;
+
+    try (Connection con = ConnectionFactory.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            Perfil p = new Perfil();
+            p.setId(rs.getInt("id"));
+            p.setTotalAcertos(rs.getInt("totalAcertos"));
+
+            Cadastro cad = new Cadastro();
+            cad.setId(rs.getInt("cadastro_id"));
+            cad.setNomePessoa(rs.getString("nomePessoa"));
+
+            p.setCadastro(cad); // AGORA O PERFIL TEM O NOME!
+
+            lista.add(p);
         }
-        return lista;  // retorna a lista de perfis
     }
+
+    return lista;
+}
+
 
     // metodo para verificar se uma coluna existe no resultado da consulta
     private boolean columnExists(ResultSet rs, String columnName) {

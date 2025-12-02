@@ -619,72 +619,78 @@ public class telaChat {
         janela.revalidate();
         janela.repaint();
     }
-    //--------------------Mostrar usuarios(ADMIN) ------------------//
-    //esse que nao est adando certo 
-    //quase tudo comentadop so falta achar o erro(nao esta iumprimindo nenhum perfil na tela )
-    
-    
+
+    //---------------------------------mostrar usuarios-------------------------------//
     private static void mostrarUsuarios() {
-        // Limpa a tela
         janela.getContentPane().removeAll();
         janela.repaint();
         janela.setLayout(null);
         janela.setSize(1300, 900);
         janela.getContentPane().setBackground(Color.WHITE);
-    
-    
-        JLabel titulo = new JLabel("Perfis Cadastrados", SwingConstants.CENTER);//cabeçalho
-        titulo.setFont(new Font("Arial", Font.BOLD, 28));
-        titulo.setBounds(200, 20, 900, 50);
-        janela.add(titulo);//add
-    
-        // Pega todos os perfis
-        ArrayList<Perfil> perfis = perfilController.listar();
-        System.out.println("Número de perfis encontrados: " + perfis.size());  // Verifique aqui o número de perfis, fizemos isso pra ver se ele estava pegando osperfis do database, mas ele nao imprimiu isso na tela 
-    
-        if (perfis.isEmpty()) {
-            JLabel aviso = new JLabel("Nenhum perfil encontrado", SwingConstants.CENTER);
-            aviso.setFont(new Font("Arial", Font.BOLD, 24));
-            aviso.setBounds(200, 100, 900, 40);
-            janela.add(aviso);
-        } else {
-            // Painel principal para exibir os perfis
-            JPanel painelLista = new JPanel();
-            painelLista.setLayout(new BoxLayout(painelLista, BoxLayout.Y_AXIS));
-            painelLista.setBackground(Color.WHITE);
-    
-            // Itera sobre os perfis e exibe os dados
-            for (Perfil p : perfis) {
-                // Bloco para cada perfil
-                JPanel bloco = new JPanel();
-                bloco.setLayout(new BorderLayout(10, 10));
-                bloco.setPreferredSize(new Dimension(1000, 60));
-                bloco.setMaximumSize(new Dimension(1100, 60));
-                bloco.setBackground(new Color(245, 245, 245));
-                bloco.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-    
-                // Exibe o ID e o nome do usuário
-                JLabel lbl = new JLabel("ID: " + p.getId() + " - " + p.getCadastro().getNomePessoa());
-                lbl.setFont(new Font("Arial", Font.PLAIN, 16));
-                lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-                bloco.add(lbl, BorderLayout.CENTER);
-    
-                // Adiciona o bloco ao painel da lista
-                painelLista.add(Box.createVerticalStrut(10));
-                painelLista.add(bloco);
-            }
-    
-            // Cria um JScrollPane para permitir rolagem caso a lista de usuários seja grande
-            JScrollPane scroll = new JScrollPane(painelLista);
-            scroll.setBounds(50, 100, 1200, 700);
-            scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-    
-            janela.add(scroll);
-        }
-    
-        janela.revalidate();
-        janela.repaint();
+
+    JLabel titulo = new JLabel("Perfis Cadastrados", SwingConstants.CENTER);
+    titulo.setFont(new Font("Arial", Font.BOLD, 28));
+    titulo.setBounds(200, 20, 900, 50);
+    janela.add(titulo);
+
+    ArrayList<Perfil> perfis = null;
+
+    try {
+        perfis = perfilController.listar();
+    } catch (Exception e) {
+        e.printStackTrace(); // MOSTRA O ERRO REAL
+        JLabel erro = new JLabel("ERRO ao carregar perfis: " + e.getMessage(), SwingConstants.CENTER);
+        erro.setFont(new Font("Arial", Font.BOLD, 20));
+        erro.setBounds(200, 200, 900, 50);
+        janela.add(erro);
     }
+
+    if (perfis == null || perfis.isEmpty()) {
+        JLabel aviso = new JLabel("Nenhum perfil encontrado", SwingConstants.CENTER);
+        aviso.setFont(new Font("Arial", Font.BOLD, 24));
+        aviso.setBounds(200, 100, 900, 40);
+        janela.add(aviso);
+    } else {
+        JPanel painelLista = new JPanel();
+        painelLista.setLayout(new BoxLayout(painelLista, BoxLayout.Y_AXIS));
+        painelLista.setBackground(Color.WHITE);
+
+        for (Perfil p : perfis) {
+            JPanel bloco = new JPanel(new BorderLayout(10, 10));
+            bloco.setPreferredSize(new Dimension(1000, 60));
+            bloco.setMaximumSize(new Dimension(1100, 60));
+            bloco.setBackground(new Color(245, 245, 245));
+            bloco.setBorder(BorderFactory.createLineBorder(Color.white));
+
+            String nome = "(nome nulo)";
+            try {
+                nome = p.getCadastro().getNomePessoa();
+                
+            } catch (Exception ignored) {}
+
+            JLabel lbl = new JLabel("ID: " + p.getId() + " | " + nome + " | " + p.getTotalAcertos() + " acertos");
+            lbl.setFont(new Font("Arial", Font.PLAIN, 16));
+            lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            bloco.add(lbl, BorderLayout.CENTER);
+
+            painelLista.add(Box.createVerticalStrut(10));
+            painelLista.add(bloco);
+        }
+
+        JScrollPane scroll = new JScrollPane(painelLista);
+        scroll.setBounds(50, 100, 1200, 700);
+        janela.add(scroll);
+    }
+
+    JButton voltar = new JButton("Voltar");
+    voltar.setBounds(500, 820, 300, 40);
+    voltar.addActionListener(e -> mostrarTelaAdmin());
+    janela.add(voltar);
+
+    janela.revalidate();
+    janela.repaint();
+}
+
     
     
     // ------------------------------------Editar perfil(ADMIN)-----------------------------//
@@ -835,21 +841,22 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
 
         // Ação quando o usuário clica na alternativa
         botao.addActionListener(e -> {
-            if (alt.isCorreta()) { // vai ser responsável por verificar se a questão está ou não correta 
-                usuarioLogado.adicionarAcerto(); // se estiver correta acrescenta um acerto no perfil do aluno 
+            if (alt.isCorreta()) {
+    usuarioLogado.adicionarAcerto();
 
-                // atualiza o perfil com o total de acertos
-                try {
-                    Perfil p = perfilController.buscarPorCadastroId(usuarioLogado.getCadastro().getId()); // vai procurar o perfil que acertou 
-                    if (p != null) {
-                        p.setTotalAcertos(usuarioLogado.getTotalAcertos());// incrementa o acerto ......... futuramente poderíamos colocar peso na questão (ficar estilo ENEM)
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();// se não der certo, vai falar que não deu certo 
-                }
+    try {
+        Perfil p = perfilController.buscarPorCadastroId(usuarioLogado.getCadastro().getId());
+        if (p != null) {
+            p.setTotalAcertos(usuarioLogado.getTotalAcertos());
+            perfilController.atualizar(p.getId(), p);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
 
-                JOptionPane.showMessageDialog(janela, "Correto!"); // exibe essa mensagem se deu certo
-            } else { // se estiver errada
+    JOptionPane.showMessageDialog(janela, "Correto!");
+}// exibe essa mensagem se deu certo
+             else { // se estiver errada
                 JOptionPane.showMessageDialog(janela, "Errado!");//exibe essa mensagem se deu errado
             }
 
