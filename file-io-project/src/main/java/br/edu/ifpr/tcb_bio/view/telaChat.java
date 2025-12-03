@@ -269,9 +269,7 @@ public class telaChat {
         titulo.setBounds(200, 100, 600, 40);
         janela.add(titulo);
 
-      
-
-        //--------------------------------Botão global de adicionar questões ------------------------------------//
+        //Botão global de adicionar questões
         JButton botaoAdicionarQuestao = new JButton("Adicionar Questão");
         botaoAdicionarQuestao.setBounds(350, 210, 300, 40);
         botaoAdicionarQuestao.addActionListener(e -> mostrarTelaAdicionarQuestao());
@@ -299,55 +297,53 @@ public class telaChat {
     janela.setSize(1300, 900);
     janela.getContentPane().setBackground(Color.WHITE);
 
-    JLabel titulo = new JLabel("Questões Cadastradas", SwingConstants.CENTER);
-    titulo.setFont(new Font("Arial", Font.BOLD, 28));
-    titulo.setBounds(200, 20, 900, 50);
-    janela.add(titulo);
+    JLabel titulo = new JLabel("Questões Cadastradas", SwingConstants.CENTER);// cabeçalho
+    titulo.setFont(new Font("Arial", Font.BOLD, 28));//fonte e tamanho da letra
+    titulo.setBounds(200, 20, 900, 50);// dimensoes
+    janela.add(titulo);//add a tela
 
-    ArrayList<Questao> lista = questaoController.listar();
+    ArrayList<Questao> lista = questaoController.listar();//vai listar todas as questpoes, para aparecerem na tela
 
-    JPanel painelLista = new JPanel();
-    painelLista.setLayout(new BoxLayout(painelLista, BoxLayout.Y_AXIS));
+    JPanel painelLista = new JPanel();// painel que vai expor a lista de questoes, ele é tipo um conteiner que vai ser usado prsa depois colocar os layouts 
+    painelLista.setLayout(new BoxLayout(painelLista, BoxLayout.Y_AXIS));//  os layouts serão colocados verticalmente 
     painelLista.setBackground(Color.WHITE);
 
     for (Questao q : lista) {
+        JPanel bloco = new JPanel(); // conteiner que colocamos as questoes dentro dele
+        bloco.setLayout(new BorderLayout(10, 10)); //esta colocando os componentes no bloco
+        bloco.setPreferredSize(new Dimension(1000, 130));//vai definir o tamanho do bloco
+        bloco.setMaximumSize(new Dimension(1100, 130)); // defini i tamanho max do paineo, isso evita que o bloco zeja maior do que a propria tela 
+        bloco.setBackground(new Color(245, 245, 245)); // cor de fundo
+        bloco.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
-        // BLOCO ORGANIZADO
-        JPanel bloco = new JPanel();
-        bloco.setLayout(new BorderLayout(10, 10));
-        bloco.setPreferredSize(new Dimension(1000, 130));
-        bloco.setMaximumSize(new Dimension(1100, 130));
-        bloco.setBackground(new Color(245, 245, 245));
-        bloco.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
-        // ENUNCIADO EM CIMA (LINHA LONGA)
-        JLabel lbl = new JLabel("ID: " + q.getId() + " - " + q.getEnunciado());
+       
+        JLabel lbl = new JLabel("ID: " + q.getId() + " - " + q.getEnunciado()); // vai pegar o enunciado da questao e o ide dela 
         lbl.setFont(new Font("Arial", Font.PLAIN, 16));
         lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         bloco.add(lbl, BorderLayout.NORTH);
 
-        // PAINEL DE BOTÕES EMBAIXO
-        JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
-        painelBotoes.setBackground(new Color(245, 245, 245));
+        
+        JPanel painelBotoes = new JPanel(); // criar painel
+        painelBotoes.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10)); // defini o layout, no centro, espaço horizontal e espaço vertical
+        painelBotoes.setBackground(new Color(245, 245, 245));//cor de fundo do painel
 
-        JButton alternativas = new JButton("Alternativas");
-        alternativas.addActionListener(e -> mostrarTelaGerenciarAlternativas(q));
+        JButton alternativas = new JButton("Alternativas"); // vai acessar a alternativa caso queira edita-la
+        alternativas.addActionListener(e -> mostrarTelaGerenciarAlternativas(q));//encaminha para a tela de gerenciar as alternativas
 
-        JButton editar = new JButton("Editar");
-        editar.addActionListener(e -> editarQuestao(q));
+        JButton editar = new JButton("Editar");// vai editar a quyestaop
+        editar.addActionListener(e -> editarQuestao(q));//mostarr a tela de edicao
 
-        JButton excluir = new JButton("Excluir");
-        excluir.addActionListener(e -> {
+        JButton excluir = new JButton("Excluir");//
+        excluir.addActionListener(e -> {// vai aparecer uma caixinha de perguinta pra saber se relamente quer apagar
             int confirm = JOptionPane.showConfirmDialog(
                 janela,
                 "Deseja realmente excluir a questão com ID : " + q.getId() + "?",
                 "Confirmar exclusão",
-                JOptionPane.YES_NO_OPTION
+                JOptionPane.YES_NO_OPTION // cria os botoezinhos
             );
-            if (confirm == JOptionPane.YES_OPTION) {
+            if (confirm == JOptionPane.YES_OPTION) { // se a confirmacao for verdadeira deeta
                 questaoController.deletar(q.getId());
-                mostrarTelaListagem();
+                mostrarTelaListagem(); // mostra novamente a tela de lista
             }
         });
 
@@ -361,8 +357,8 @@ public class telaChat {
         painelLista.add(bloco);
     }
 
-    JScrollPane scroll = new JScrollPane(painelLista);
-    scroll.setBounds(50, 100, 1200, 700);
+    JScrollPane scroll = new JScrollPane(painelLista);// vai permitir que a tela rode
+    scroll.setBounds(50, 100, 1200, 700);// defini i tamanho da gbarrinha
     scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
     janela.add(scroll);
@@ -379,12 +375,12 @@ public class telaChat {
         janela.setLayout(null);
         janela.getContentPane().setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("Adicionar Nova Questão", SwingConstants.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 22));
-        titulo.setBounds(200, 40, 600, 40);
-        janela.add(titulo);
+        JLabel titulo = new JLabel("Adicionar Nova Questão", SwingConstants.CENTER); // enunciado da tela
+        titulo.setFont(new Font("Arial", Font.BOLD, 22));//fonte e tamahnho
+        titulo.setBounds(200, 40, 600, 40);//seta
+        janela.add(titulo);//add na tela
 
-        JLabel labelEnunciado = new JLabel("Enunciado:");// 
+        JLabel labelEnunciado = new JLabel("Enunciado:"); 
         labelEnunciado.setBounds(100, 120, 100, 30);
         janela.add(labelEnunciado);
 
@@ -629,17 +625,17 @@ public class telaChat {
         janela.setSize(1300, 900);
         janela.getContentPane().setBackground(Color.WHITE);
 
-    JLabel titulo = new JLabel("Perfis Cadastrados", SwingConstants.CENTER);
-    titulo.setFont(new Font("Arial", Font.BOLD, 28));
-    titulo.setBounds(200, 20, 900, 50);
-    janela.add(titulo);
+    JLabel titulo = new JLabel("Perfis Cadastrados", SwingConstants.CENTER); // cabecalho da tela 
+    titulo.setFont(new Font("Arial", Font.BOLD, 28));//tamnhho e fonte
+    titulo.setBounds(200, 20, 900, 50);//seta o tamanho
+    janela.add(titulo);//add à tela
 
-    ArrayList<Perfil> perfis = null;
+    ArrayList<Perfil> perfis = null; 
 
     try {
-        perfis = perfilController.listar();
-    } catch (Exception e) {
-        e.printStackTrace(); // MOSTRA O ERRO REAL
+        perfis = perfilController.listar(); //vai tentar pegar tpodos os perfis
+    } catch (Exception e) {//se der erro cai aqui e mostra o erro que deu 
+        e.printStackTrace(); 
         JLabel erro = new JLabel("ERRO ao carregar perfis: " + e.getMessage(), SwingConstants.CENTER);
         erro.setFont(new Font("Arial", Font.BOLD, 20));
         erro.setBounds(200, 200, 900, 50);
@@ -650,113 +646,54 @@ public class telaChat {
         JLabel aviso = new JLabel("Nenhum perfil encontrado", SwingConstants.CENTER);
         aviso.setFont(new Font("Arial", Font.BOLD, 24));
         aviso.setBounds(200, 100, 900, 40);
-        janela.add(aviso);
+        janela.add(aviso); // se a lista estuiver vazia vai avisar o admin com o aviso 
     } else {
-        JPanel painelLista = new JPanel();
+        JPanel painelLista = new JPanel();// cria o painel onmde aparecderá os perfis
         painelLista.setLayout(new BoxLayout(painelLista, BoxLayout.Y_AXIS));
-        painelLista.setBackground(Color.WHITE);
+        painelLista.setBackground(Color.WHITE);// a cor do painel
 
         for (Perfil p : perfis) {
-            JPanel bloco = new JPanel(new BorderLayout(10, 10));
-            bloco.setPreferredSize(new Dimension(1000, 60));
-            bloco.setMaximumSize(new Dimension(1100, 60));
-            bloco.setBackground(new Color(245, 245, 245));
-            bloco.setBorder(BorderFactory.createLineBorder(Color.white));
+            JPanel bloco = new JPanel(new BorderLayout(10, 10)); //  cria o painel
+            bloco.setPreferredSize(new Dimension(1000, 60)); // vai setar a dimensao do painel 
+            bloco.setMaximumSize(new Dimension(1100, 60)); // para o painel nao ficar maior que a tela
+            bloco.setBackground(new Color(245, 245, 245)); // cor do painel 
+            bloco.setBorder(BorderFactory.createLineBorder(Color.white)); 
 
-            String nome = "(nome nulo)";
+            String nome = ""; // vai comecar nulo primeiro 
             try {
-                nome = p.getCadastro().getNomePessoa();
+                nome = p.getCadastro().getNomePessoa(); // pega o id e o nome do usuario paraaparecer na tela
                 
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(janela, "Erro ao cadastrar alternativa: " + e.getMessage());// se nao der s=certo exibe uma mensagem de errro
 
-            JLabel lbl = new JLabel("ID: " + p.getId() + " | " + nome + " | " + p.getTotalAcertos() + " acertos");
+
+            }
+
+            JLabel lbl = new JLabel("ID: " + p.getId() + " | " + nome + " | " + p.getTotalAcertos() + " acertos");// vai aparecer em cada layout
             lbl.setFont(new Font("Arial", Font.PLAIN, 16));
-            lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            lbl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // cria um espaco vazio em volta do texto
             bloco.add(lbl, BorderLayout.CENTER);
 
-            painelLista.add(Box.createVerticalStrut(10));
+            painelLista.add(Box.createVerticalStrut(10)); // adiciona um espaço vertical 
             painelLista.add(bloco);
         }
 
-        JScrollPane scroll = new JScrollPane(painelLista);
-        scroll.setBounds(50, 100, 1200, 700);
-        janela.add(scroll);
+        JScrollPane scroll = new JScrollPane(painelLista);// add um painel rolável 
+        scroll.setBounds(50, 100, 1200, 700); // seta o tamanho
+        janela.add(scroll);//add 
     }
 
-    JButton voltar = new JButton("Voltar");
-    voltar.setBounds(500, 820, 300, 40);
-    voltar.addActionListener(e -> mostrarTelaAdmin());
+    JButton voltar = new JButton("Voltar"); // botao de voltar
+    voltar.setBounds(500, 800, 300, 40);
+    voltar.addActionListener(e -> mostrarTelaAdmin());//volta para a tela de menu
     janela.add(voltar);
 
     janela.revalidate();
     janela.repaint();
 }
 
-    
-    
-    // ------------------------------------Editar perfil(ADMIN)-----------------------------//
-    //tudo comentado, só falta funcionar
-    // esse nao deu certto pois o ver usuario, nao lista os usarios , deconfiamos que o prooblema està  no perfil e nao na nossa tela de chat
-   private static void mostrarTelaEditarPerfil(Perfil perfil) {
-    janela.getContentPane().removeAll();
-    janela.repaint();
-    janela.setLayout(null);
-    janela.getContentPane().setBackground(Color.WHITE);
 
-    JLabel titulo = new JLabel("Editar Perfil - ID: " + perfil.getId(), SwingConstants.CENTER);//cabeçalho da tela
-    titulo.setFont(new Font("Arial", Font.BOLD, 22));
-    titulo.setBounds(200, 40, 600, 40);
-    janela.add(titulo);
-
-    JLabel labelNome = new JLabel("Nome:");//cria o titulo
-    labelNome.setBounds(100, 120, 80, 25);
-
-    JTextField campoNome = new JTextField(perfil.getCadastro().getNomePessoa());// o usuario digita
-    campoNome.setBounds(180, 120, 500, 25);
-
-    JLabel labelTipo = new JLabel("Tipo:");// cria o titilo do espaço de digitar
-    labelTipo.setBounds(100, 170, 80, 25);
-
-    String[] tipos = {"ADMIN", "ALUNO"};
-    JComboBox<String> campoTipo = new JComboBox<>(tipos); // usuario seleciona qual dos dois
-    campoTipo.setBounds(180, 170, 200, 25);
-    campoTipo.setSelectedItem(perfil.getCadastro().getTipoUsuario());
-
-    // botão salvar
-    JButton salvar = new JButton("Salvar");
-    salvar.setBounds(350, 260, 300, 40);
-    salvar.addActionListener(e -> { // se clicar o botão vai fazer as seguntes ações
-        // atualiza o nome
-        perfil.getCadastro().setNomePessoa(campoNome.getText());
-
-        // atualiza o tipo
-        perfil.getCadastro().setTipoUsuario((String) campoTipo.getSelectedItem());
-
-        // salva no database
-        perfilController.atualizar(perfil.getId(), perfil);
-
-        // volta para a lista de perfis
-        mostrarUsuarios();
-    });
-
-    // botão voltar
-    JButton voltar = new JButton("Voltar");
-    voltar.setBounds(350, 320, 300, 40);
-    voltar.addActionListener(e -> mostrarUsuarios());
-
-    // adiciona todos os itens na tela
-    janela.add(labelNome);
-    janela.add(campoNome);
-    janela.add(labelTipo);
-    janela.add(campoTipo);
-    janela.add(salvar);
-    janela.add(voltar);
-
-    janela.revalidate();
-    janela.repaint();
-}
-
-    // ------------------ Mostrar Questões para o aluno ------------------//
+    // ------------------ Tela Aluno ------------------//
     // esse da formatado certo 3e comentado
     private static void mostrarTelaReinos(Perfil usuario) {
         janela.getContentPane().removeAll();
@@ -787,9 +724,15 @@ public class telaChat {
             y += 40; // para q os prox. fiquem um em baixo do outro
         }
         JButton botaoPerfil = new JButton("Perfil"); // botao clicavel de perfil
-        botaoPerfil.setBounds(500, y + 60, 100, 30);
+        botaoPerfil.setBounds(350, 460, 300, 40);
         botaoPerfil.addActionListener(e -> mostrarTelaPerfil(usuario));// mostra a tela de perfil
         janela.add(botaoPerfil);// add na tela
+
+
+        JButton botaoVoltar = new JButton("Sair");//botao clicavel
+        botaoVoltar.setBounds(350, 510, 300, 40);
+        botaoVoltar.addActionListener(e -> criarTelaInicial());// se clicar aparece essa tela 
+        janela.add(botaoVoltar);// add o botão à tela 
 
 
         janela.revalidate();
