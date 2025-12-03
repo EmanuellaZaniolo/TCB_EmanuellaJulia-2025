@@ -5,15 +5,15 @@ public class Perfil {
     private int id; // novo campo
     private Cadastro cadastro;
     private int totalAcertos;
-
+//constrtutor de pperfil
     public Perfil() {
     }
-
+//aqui é so pr apegar cadastro, ele é usado la em tela chat
     public Perfil(Cadastro cadastro) {
         this.cadastro = cadastro;
         this.totalAcertos = 0;
     }
-
+//aqui é o metod usado em controller e dao de perfil
     public Perfil(int id, Cadastro cadastro, int totalAcertos) {
         this.id = id;
         this.cadastro = cadastro;

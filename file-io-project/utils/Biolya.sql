@@ -51,3 +51,10 @@ CREATE TABLE IF NOT EXISTS perfil_questao (
     FOREIGN KEY (id_questao) REFERENCES questao(id) ON DELETE CASCADE,
     FOREIGN KEY (id_alternativa) REFERENCES alternativa(id) ON DELETE CASCADE
 );
+CREATE TABLE perfil_questao (
+    idPerfil INT NOT NULL,
+    idQuestao INT NOT NULL,
+    PRIMARY KEY (idPerfil, idQuestao),
+    FOREIGN KEY (idPerfil) REFERENCES perfil(id),
+    FOREIGN KEY (idQuestao) REFERENCES questao(id)
+);
