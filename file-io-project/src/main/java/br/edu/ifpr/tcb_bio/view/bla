@@ -1,0 +1,43 @@
+// nova versão que mostra cada questão individualmente, baseada no índice
+private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> questoes, int indice) {
+    janela.getContentPane().removeAll();
+    janela.repaint();
+    janela.setLayout(null);
+    janela.getContentPane().setBackground(Color.WHITE);
+
+    // pega a questão atual da lista
+    Questao q = questoes.get(indice);
+
+    // pega as alternativas da questao
+    ArrayList<Alternativa> alternativas = alternativaController.listarPorQuestao(q.getId());
+    q.setAlternativas(alternativas); // associa as alternativas à questão
+
+    // cria um campo de texto para colocar o enunciado da questao
+    JLabel titulo = new JLabel(q.getEnunciado(), SwingConstants.CENTER);// mostra a questão
+    titulo.setBounds(100, 250, 800, 30);// seta a posicao que vai aparecer
+    janela.add(titulo);
+
+    // cria botões para cada alternativa
+    int y = 300; // posição vertical inicial
+    for (Alternativa alt : alternativas) { // usamos para aparecer todas as alternativas na tela 
+        JButton botao = new JButton(alt.getTexto()); // cria um botao clicavel para todas as alternativas 
+        botao.setBounds(100, y, 800, 30);//seta os botoes 
+
+        // Ação quando o usuário clica na alternativa
+        botao.addActionListener(e -> {
+            int idQuestao=q.getId();
+            int idPerfil=usuarioLogado.getId();
+            PQ_controller pq_controller = new PQ_controller();
+            pq_controller.registrarResposta(idPerfil, idQuestao);
+            if (alt.isCorreta()) {
+    usuarioLogado.adicionarAcerto();
+
+    try {
+        Perfil p = perfilController.buscarPorCadastroId(usuarioLogado.getCadastro().getId());
+        if (p != null) {
+            p.setTotalAcertos(usuarioLogado.getTotalAcertos());
+            perfilController.atualizar(p.getId(), p);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
