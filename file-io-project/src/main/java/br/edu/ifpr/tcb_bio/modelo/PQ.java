@@ -1,19 +1,19 @@
 package br.edu.ifpr.tcb_bio.modelo;
 
 public class PQ {
-    private int idPerfil;
-    private int idQuestao;
+    private int id_perfil;
+    private int id_questao;
 
-    public PQ(int idPerfil, int idQuestao) {
-        this.idPerfil = idPerfil;
-        this.idQuestao = idQuestao;
+    public PQ(int id_perfil, int id_questao) {
+        this.id_perfil = id_perfil;
+        this.id_questao = id_questao;
     }
 
     public int getIdPerfil() {
-        return idPerfil;
+        return id_perfil;
     }
 
     public int getIdQuestao() {
-        return idQuestao;
+        return id_questao;
     }
 }

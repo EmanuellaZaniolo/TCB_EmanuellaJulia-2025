@@ -2,6 +2,7 @@ package br.edu.ifpr.tcb_bio.view;
 
 import br.edu.ifpr.tcb_bio.controller.AlternativaController;
 import br.edu.ifpr.tcb_bio.controller.CadastroController;
+import br.edu.ifpr.tcb_bio.controller.PQ_controller;
 import br.edu.ifpr.tcb_bio.controller.PerfilController;
 import br.edu.ifpr.tcb_bio.controller.QuestaoController;
 import br.edu.ifpr.tcb_bio.controller.ReinoController;
@@ -841,6 +842,10 @@ private static void mostrarQuestaoPorIndice(Reino reino, ArrayList<Questao> ques
 
         // Ação quando o usuário clica na alternativa
         botao.addActionListener(e -> {
+            int idQuestao=q.getId();
+            int idPerfil=usuarioLogado.getId();
+            PQ_controller pq_controller = new PQ_controller();
+            pq_controller.registrarResposta(idPerfil, idQuestao);
             if (alt.isCorreta()) {
     usuarioLogado.adicionarAcerto();
 
